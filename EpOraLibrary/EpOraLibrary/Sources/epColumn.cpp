@@ -1,9 +1,3 @@
-// OraLib 0.0.3 / 2002-06-30
-//	column.cpp
-//
-//	http://606u.dir.bg/
-//	606u@dir.bg
-
 #include "Column.h"
 #include <assert.h>
 #include "error.h"

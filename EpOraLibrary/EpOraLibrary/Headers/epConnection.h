@@ -1,9 +1,3 @@
-// OraLib 0.0.3 / 2002-06-30
-//	connection.h
-//
-//	http://606u.dir.bg/
-//	606u@dir.bg
-
 #ifndef	__EP_CONNECTION_H__
 #define	__EP_CONNECTION_H__
 

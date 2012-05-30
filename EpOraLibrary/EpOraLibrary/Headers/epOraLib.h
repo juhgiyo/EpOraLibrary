@@ -49,4 +49,19 @@ An Interface for EP Oracle Library.
 #endif  //EP_ORACLELIB_DLL_EXPORT
 
 
+// internal data types are 4 only: number, date, text and result set
+enum DataTypesEnum
+{
+	DT_UNKNOWN,
+	DT_NUMBER,
+	DT_DATE,
+	DT_TEXT,
+	DT_RESULT_SET
+};
+
+
+// number of rows to request on each fetch
+#define FETCH_SIZE 200000
+
+
 #endif //__EP_ORACLE_LIB_H__

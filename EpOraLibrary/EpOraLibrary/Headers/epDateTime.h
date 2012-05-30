@@ -28,7 +28,7 @@ namespace epol {
 	{
 
 	public:
-		inline DateTime (void) {};
+		inline DateTime () {};
 
 		inline DateTime (unsigned char day, MonthsEnum month, signed short year, unsigned char hour = 0, unsigned char month = 0, unsigned char second = 0)
 		{
@@ -55,7 +55,7 @@ namespace epol {
 			m_day = day; 
 		};
 
-		inline MonthsEnum GetMonth (void) const
+		inline MonthsEnum GetMonth () const
 		{ 
 			return m_month; 
 		};

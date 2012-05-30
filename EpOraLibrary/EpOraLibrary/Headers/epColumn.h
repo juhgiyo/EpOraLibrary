@@ -7,58 +7,56 @@ namespace epol
 {
 	class EP_ORACLELIB Column
 	{
-		friend class resultset;
+		friend class ResultSet;
 	public:
 		// returns whether column value is null
-		bool is_null (void) const;
+		bool IsNull () const;
 
 		// returns column value as a text
-		inline operator Pstr (void) const { return (ToString ()); };
+		inline operator Pstr () const { return (ToString ()); };
 		Pstr ToString() const;
 
 		// returns column value as a double
-		inline operator double (void) const { return (ToDouble ()); };
+		inline operator double () const { return (ToDouble ()); };
 		double ToDouble() const;
 
 		// returns column value as a long
-		inline operator long (void) const { return (ToLong ()); };
+		inline operator long () const { return (ToLong ()); };
 		long ToLong () const;
 
 		// returns column value as a date/time helper class
-		inline operator DateTime (void) const { return (ToDateTime ()); };
+		inline operator DateTime () const { return (ToDateTime ()); };
 		DateTime ToDateTime() const;
-
-		// (column is not deleted by the client, but when result set is released instead)
-		inline void release (void) { };
 
 	private:
 		// public not creatable; use connection.select or statement.select
 		// attaches this column to a result set; allocates memory for the fetch buffer
-		column (ResultSet *rs, const char *name, ub4 name_len, ub2 oci_data_type, ub4 max_data_size, int fetch_size = FETCH_SIZE);
+		Column (ResultSet *rs, const char *name, unsigned int nameLen, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize = FETCH_SIZE);
 
 		// public not deletable; deleted, when result set is released
-		~column ();
+		~Column ();
 
 		// initialize data members
-		void initialize (void);
+		void initialize ();
 
 		// free resources allocated
-		void cleanup (void);
+		void cleanup ();
 
 		// private copy-constructor and assignment operator - class could not be copied
-		column (
-			IN const column& /* col */) { /* could not be copy-constructed */ };
-		column& operator = (
-			IN const column& /* col */) { return (*this); /* could not be assigned */ };
+		Column (const Column& /* col */) { /* could not be copy-constructed */ };
+		Column& operator = (const Column& /* col */) 
+		{
+			return (*this); /* could not be assigned */ 
+		};
 
 
 		std::string m_colName;		// in the exact case
 		DataTypesEnum m_colType;		// as it will be returned
-		ub2 m_ociType;		// oracle's data type
+		unsigned short m_ociType;		// oracle's data type
 		int	m_size;			// number of bytes required for
 
-		sb2* m_indicators;	// an array with indicators: 0 - ok; -1 - null
-		ub2* m_dataLength;		// an array with data lengths (for text columns)
+		short* m_indicators;	// an array with indicators: 0 - ok; -1 - null
+		unsigned short* m_dataLengths;		// an array with data lengths (for text columns)
 		char* m_fetchBuffer;	// where data is returned (fetched)
 
 		OCIDefine* m_defineHandle;	// used for the column

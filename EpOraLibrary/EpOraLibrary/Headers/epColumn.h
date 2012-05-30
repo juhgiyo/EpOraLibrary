@@ -1,6 +1,7 @@
 #ifndef __EP_COLUMN_H__
 #define __EP_COLUMN_H__
 #include "epOraLib.h"
+#include <string>
 #include "epDateTime.h"
 
 namespace epol
@@ -13,19 +14,31 @@ namespace epol
 		bool IsNull () const;
 
 		// returns column value as a text
-		inline operator Pstr () const { return (ToString ()); };
+		inline operator Pstr () const 
+		{ 
+			return (ToString ());
+		}
 		Pstr ToString() const;
 
 		// returns column value as a double
-		inline operator double () const { return (ToDouble ()); };
+		inline operator double () const 
+		{ 
+			return (ToDouble ()); 
+		}
 		double ToDouble() const;
 
 		// returns column value as a long
-		inline operator long () const { return (ToLong ()); };
+		inline operator long () const 
+		{ 
+			return (ToLong ());
+		}
 		long ToLong () const;
 
 		// returns column value as a date/time helper class
-		inline operator DateTime () const { return (ToDateTime ()); };
+		inline operator DateTime () const 
+		{ 
+			return (ToDateTime ());
+		}
 		DateTime ToDateTime() const;
 
 	private:
@@ -40,14 +53,17 @@ namespace epol
 		void initialize ();
 
 		// free resources allocated
-		void cleanup ();
+		void cleanUp ();
 
 		// private copy-constructor and assignment operator - class could not be copied
-		Column (const Column& /* col */) { /* could not be copy-constructed */ };
+		Column (const Column& /* col */) 
+		{ 
+			/* could not be copy-constructed */ 
+		}
 		Column& operator = (const Column& /* col */) 
 		{
 			return (*this); /* could not be assigned */ 
-		};
+		}
 
 
 		std::string m_colName;		// in the exact case

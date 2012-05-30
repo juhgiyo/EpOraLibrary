@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				InlineFunctionExpansion="1"
+				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories=".\Headers;.\OciHeaders"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				StringPooling="true"
@@ -167,7 +167,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\epError.cpp"
+				RelativePath=".\Sources\epOraError.cpp"
 				>
 			</File>
 			<File
@@ -205,11 +205,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Headers\epError.h"
+				RelativePath=".\Headers\epol.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Headers\epol.h"
+				RelativePath=".\Headers\epOraError.h"
 				>
 			</File>
 			<File

@@ -2,6 +2,7 @@
 #define	__EP_CONNECTION_H__
 
 #include "epOraLib.h"
+#include "oci.h"
 namespace epol 
 {
 	class Statement;
@@ -64,7 +65,7 @@ namespace epol
 		void initialize ();
 
 		// free resources allocated
-		inline void cleanup () 
+		inline void cleanUp () 
 		{
 			Close (); 
 		};

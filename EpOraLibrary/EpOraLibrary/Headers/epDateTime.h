@@ -30,13 +30,13 @@ namespace epol {
 	public:
 		inline DateTime () {};
 
-		inline DateTime (unsigned char day, MonthsEnum month, signed short year, unsigned char hour = 0, unsigned char month = 0, unsigned char second = 0)
+		inline DateTime (unsigned char day, MonthsEnum month, signed short year, unsigned char hour = 0, unsigned char minute = 0, unsigned char second = 0)
 		{
 			m_year=year;
 			m_month=month;
 			m_day=day;
 			m_hour=hour;
-			m_month=month;
+			m_minute=minute;
 			m_second=second;
 		};
 
@@ -92,7 +92,7 @@ namespace epol {
 		
 		inline void GetMinute (unsigned char minute)
 		{ 
-			m_month = minute; 
+			m_month = static_cast<MonthsEnum>(minute); 
 		};
 
 		inline unsigned char GetSecond () const

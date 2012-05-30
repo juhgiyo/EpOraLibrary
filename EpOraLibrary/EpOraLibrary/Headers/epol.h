@@ -33,7 +33,7 @@ An Interface for EP Oracle Library
 // Algo
 #include "epColumn.h"
 #include "epConnection.h"
-#include "epError.h"
+#include "epOraError.h"
 #include "epParameter.h"
 #include "epResultSet.h"
 #include "epStatement.h"

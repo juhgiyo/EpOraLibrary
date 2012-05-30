@@ -1,7 +1,8 @@
 #ifndef	__EP_PARAMETER_H__
 #define	__EP_PARAMETER_H__
 
-#include "epDateTime"
+#include "epOraLib.h"
+#include "epDateTime.h"
 #include <string>
 
 namespace epol {
@@ -31,7 +32,7 @@ namespace epol {
 		Parameter& operator = (long value);
 
 		// sets parameter value to some date/time
-		Parameter& operator = (const DateTime& d);
+		Parameter& operator = (const DateTime& dateTime);
 
 		// returns whether parameter value is null
 		inline bool IsNull () const 
@@ -56,7 +57,7 @@ namespace epol {
 		// returns parameter value as a long
 		inline operator long () const 
 		{ 
-			return (as_long ()); 
+			return (ToLong ()); 
 		};
 		long ToLong () const;
 
@@ -96,7 +97,7 @@ namespace epol {
 		void initialize ();
 
 		// free resources allocated
-		void cleanup ();
+		void cleanUp ();
 
 		// attaches parameter to a statement
 		// when type is set to DT_UNKNOWN type is taken from name's prefix
@@ -134,7 +135,7 @@ namespace epol {
 	}; // parameter class
 
 
-}; // oralib namespace
+};
 
 
 #endif	// __EP_PARAMETER_H__

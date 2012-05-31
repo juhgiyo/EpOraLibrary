@@ -43,7 +43,12 @@ EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 60
 #include "oci.h"
 namespace epol {
 
+	/*! 
+	@class ResultSet epResultSet.h
+	@brief This is a class representing OracleDB Result Set 
 
+	Interface for the OracleDB Result Set.
+	*/
 	class ResultSet
 	{
 		// friends
@@ -54,91 +59,178 @@ namespace epol {
 
 
 	public:
-		// return end-of-data indicator
+		/*!
+		Return the End-Of-Data indicator
+		@return true if at end of data otherwise false.
+		*/
 		inline bool IsEod () const 
 		{ 
 			return (m_currentRow >= m_rowsFetched && m_isEod); 
 		}
 
-		// skip to next row; returns false if current one is the last
+		/*!
+		Traverse to the next row
+		@return true if successfully traversed, false if at last row
+		*/
 		inline bool operator ++ () 
 		{
 			return (Next ()); 
 		};
+
+		/*!
+		Traverse to the next row
+		@return true if successfully traversed, false if at last row
+		*/
 		bool Next ();
 
-		// access columns in the current row by name or index
+		/*!
+		Get the column by column name within current row
+		@param[in] columnName the name of the column to get
+		@return the column with given name within current row
+		*/
 		Column& operator [] (const TCHAR *columnName);
+
+		/*!
+		Get the column by column index within current row
+		@param[in] columnIndex the index of the column to get
+		@return the column at given index within current row
+		*/
 		Column& operator [] (unsigned short columnIndex);
 
+		/*!
+		Release the self object
+		*/
 		inline void Release () 
 		{
-			delete this; 
+			EP_DELETE this; 
 		}
 
 	private:
-		// public - not creatable
+		/*!
+		Default Constructor
+
+		*Cannot be created publicly
+		@param[in] rs the OCI statement handle.
+		@param[in] useConnection the connection object to use
+		@param[in] fetchSize the size of fetching
+		*/
 		ResultSet (OCIStmt *rs, Connection *useConnection,unsigned int fetchSize = FETCH_SIZE);
 
-		// public - not deletable - use release instead
+		/*!
+		Default Destructor
+		
+		Use ResultSet::Release instead
+		*Cannot be deleted publicly
+		*/
 		~ResultSet ();
+		
+		/*!
+		Default Copy Constructor
 
-		// private copy-constructor and assignment operator - class could not be copied
-		ResultSet ( const ResultSet& /* rs */) 
+		*Class cannot be copied
+		@param rs the ResultSet object to copy
+		*/
+		ResultSet ( const ResultSet& rs) 
 		{ 
 			/* could not be copy-constructed */ 
 		}
-		ResultSet& operator = ( const ResultSet& /* rs */) 
+
+		/*!
+		Copy Operator
+
+		*Class cannot be copied
+		@param rs the ResultSet object to copy
+		*/
+		ResultSet& operator = ( const ResultSet& rs ) 
 		{ 
 			return (*this); /* could not be copy-constructed */ 
 		}
 
-		// initialize private data
+		/*!
+		Initialize member variables
+		*/
 		void initialize ();
 
-		// free resources allocated
+		/*!
+		Release all resources allocated
+		*/
 		void cleanUp ();
 
-		// attaches a result set object to a statement handle
+		/*!
+		Attach the result set object to given statement handle
+		@param[in] rs the OCI statement handle.
+		@param[in] useConnection the connection object to use
+		@param[in] fetchSize the size of fetching
+		*/
 		void attach (OCIStmt *rs,Connection *useConnection,unsigned int fetchSize = FETCH_SIZE);
 
-		// returns number of columns
+		/*!
+		Returns number of columns
+		@return the number of columns
+		*/
 		unsigned int columnsCount();
 
-		// returns number of rows fetched so far
+		/*!
+		Returns number of rows fetched so far
+		@return the number of rows fetched so far
+		*/
 		unsigned int rowsCount();
 
-		// attaches a statement - freed, when the result set is released (connection.select)
+		/*!
+		Attach the given statement object to this ResultSet
+		*Released when the Result Set is released 
+		@param[in] selectStmt the statement to be attached
+		*/
 		void attachStatement(Statement *selectStmt);
 
-		// describe columns of the result set
+		/*!
+		Describe columns of the result set
+		*/
 		void describe ();
 
-		// define columns of the result set - bound buffers to columns
+		/*!
+		Define columns of the result set 
+		*Bound buffers to columns
+		*/
 		void define ();
 
-		// fetch new block of rows in the buffers
+		/*!
+		Fetch new block of rows in the buffers
+		*/
 		void fetchRows ();
 
 
+		/// Type Definition for Columns
 		typedef std::vector <Column*>	Columns;
+		/// Type Definition for ColumnsMap
 		typedef std::map <EpTString, Column*>	ColumnsMap;
-		Columns			m_columns;		// an array with result set columns
-		ColumnsMap		m_columnsMap;	// a map with columns against their names
+		/// array with Result Set columns
+		Columns			m_columns;		
+		/// map with columns against their names
+		ColumnsMap		m_columnsMap;
 
-		Connection		*m_conn;			// active connection
-		OCIStmt			*m_rsHandle;		// oci statement handle for the result set
+		/// active connection
+		Connection		*m_conn;
+		/// OCI statement handle for the Result Set
+		OCIStmt			*m_rsHandle;
 
-		Statement		*m_stmt;			// if created via connection.select
-		unsigned short	m_fetchCount;	// number of rows to fetch at once
+		/// Statement Object when created via Connection::Select
+		Statement		*m_stmt;
+		/// the number of rows to fetch at once
+		unsigned short	m_fetchCount;
 
-		unsigned int	m_rowsFetched;	// number of rows fetched so far
-		unsigned int	m_currentRow;	// current row (0-based)
-		bool			m_isEod;			// end-of-data reached?
+		/// the number of rows fetched so far
+		unsigned int	m_rowsFetched;
+		/// current row index (0 based)
+		unsigned int	m_currentRow;
+		/// flag for end-of-data
+		bool			m_isEod;
 
-		bool			m_isDescribed;	// is result set (columns) described flag
-		bool			m_isDefined;		// is result set defined flag
-
+		/// flag for whether Result Set is described or not
+		bool			m_isDescribed;
+		/// flag for whether Result Set is defined or not
+		bool			m_isDefined;
+		/// the total number of rows
 		unsigned int m_nTotRow;
 
 	}; 

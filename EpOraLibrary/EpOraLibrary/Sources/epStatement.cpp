@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "epResultSet.h"
 #include "epParameter.h"
 #include "epConnection.h"
-#include <assert.h>
 #include "epOraError.h"
 using namespace epol;
 
@@ -59,22 +58,24 @@ void Statement::cleanUp ()
 {
 	if (m_stmtHandle)
 	{
-		// ignore return code - returns either OCI_SUCCESS or OCI_INVALID_HANDLE
 		OCIHandleFree (m_stmtHandle, OCI_HTYPE_STMT);
 		m_stmtHandle = NULL;
 	}
+	for (Parameters::iterator i=m_parameters.begin (); i!=m_parameters.end (); ++i)
+		EP_DELETE (*i);
+	m_parameters.clear ();
+	m_parametersMap.clear();	
 }
 
 
 void Statement::prepare (const TCHAR *sqlStmt)
 {
 	// prerequisites
-	assert (m_conn != NULL && sqlStmt != NULL);
-	assert (m_stmtHandle == NULL);	// otherwise old-one will never be released
+	EP_ASSERT (m_conn != NULL && sqlStmt != NULL);
+	EP_ASSERT (m_stmtHandle == NULL);	
 
 	int	result;
 
-	// allocate statement handle
 	result = OCIHandleAlloc (m_conn->m_envHandle,(void **) &m_stmtHandle,OCI_HTYPE_STMT,0,	NULL);
 
 	if (result == OCI_SUCCESS)
@@ -106,13 +107,11 @@ void Statement::prepare (const TCHAR *sqlStmt)
 
 void Statement::executePrepared ()
 {
-	// prerequisites
-	assert (m_conn != NULL && m_isPrepared);
+	EP_ASSERT (m_conn != NULL && m_isPrepared);
 
 	int	result;
 	unsigned int iters;
 
-	// direct select statement?
 	iters = (m_stmtType == ST_SELECT) ? 0 : 1;
 	result = OCIStmtExecute (m_conn->m_svcContextHandle,m_stmtHandle, m_conn->m_errorHandle, iters,	0, NULL, NULL, OCI_DEFAULT);
 
@@ -125,11 +124,10 @@ void Statement::executePrepared ()
 
 ResultSet* Statement::Select ()
 {
-	// prerequisites
-	assert (m_isPrepared && m_stmtType == ST_SELECT);
+	EP_ASSERT (m_isPrepared && m_stmtType == ST_SELECT);
 
 	Execute ();
-	ResultSet *resultSet = new ResultSet (m_stmtHandle,m_conn);
+	ResultSet *resultSet = EP_NEW ResultSet (m_stmtHandle,m_conn);
 	try
 	{
 		resultSet->fetchRows();
@@ -138,11 +136,45 @@ ResultSet* Statement::Select ()
 	catch (...)
 	{
 		if (resultSet) 
-			delete resultSet;
+			EP_DELETE resultSet;
 		throw;
 	}
 }
 
 
+Parameter& Statement::Bind (const TCHAR *name,DataTypesEnum type)
+{
+	// prerequisites
+	EP_ASSERT (name);
+
+	// could throw an exception
+	Parameter *param = new Parameter (this,	name,type,FETCH_SIZE);
+	try
+	{
+		m_parameters.push_back (param);
+		m_parametersMap [param->m_paramName] = param;
+	}
+	catch (...) // STL exception, perhaps
+	{
+		EP_DELETE param;
+		throw;
+	}
+	return (*param);
+}
 
 
+Parameter& Statement::operator [] (const TCHAR *paramName)
+{
+	ParametersMap::iterator i = m_parametersMap.find (EpTString(paramName));
+	if (i == m_parametersMap.end ())
+		throw (OraError (EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, paramName));
+	return (*(i->second));
+}
+
+
+Parameter& Statement::operator [] (unsigned short paramIndex)
+{
+	if (paramIndex < FIRST_PARAMETER_NO ||	paramIndex > m_parameters.size ())
+		throw (OraError(EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, _T("%d"), (int) paramIndex));
+	return (*(m_parameters.at (paramIndex - FIRST_PARAMETER_NO)));
+}

@@ -22,10 +22,8 @@ using namespace epol;
 
 OraError::OraError (int oraErr,OCIError *errorHandle, const TCHAR *sourceName, long lineNumber, const TCHAR *format,...)
 {
-	// sets-up ora_code and description
 	oracleError (oraErr, errorHandle, NULL);
 
-	// concat user-specified details
 	if (format)
 	{
 		va_list	va;
@@ -43,10 +41,8 @@ OraError::OraError (int oraErr,OCIError *errorHandle, const TCHAR *sourceName, l
 
 OraError::OraError (int oraErr, OCIEnv *envHandle,const TCHAR *sourceName, long lineNumber, const TCHAR *format,...)
 {
-	// sets-up ora_code and description
 	oracleError (oraErr,NULL,envHandle);
 
-	// concat user-specified details
 	if (format)
 	{
 		va_list	va;
@@ -64,10 +60,8 @@ OraError::OraError (int oraErr, OCIEnv *envHandle,const TCHAR *sourceName, long 
 
 OraError::OraError (int oralibErr, const TCHAR *sourceName, long lineNumber, const TCHAR *format, ...)
 {
-	// sets-up code and description
 	oralibError (oralibErr);
 
-	// concat user-specified details
 	if (format)
 	{
 		va_list	va;
@@ -84,13 +78,10 @@ OraError::OraError (int oralibErr, const TCHAR *sourceName, long lineNumber, con
 }
 
 
-#if	defined (_WIN32) // Windows platform only
 OraError::OraError (const TCHAR *sourceName, long lineNumber,const TCHAR *format,	...)
 {
-	// sets-up winapi_code and description
 	winapiError ();
 
-	// concat user-specified details
 	if (format)
 	{
 		va_list	va;
@@ -105,10 +96,9 @@ OraError::OraError (const TCHAR *sourceName, long lineNumber,const TCHAR *format
 	m_source = sourceName;
 	m_lineNo = lineNumber;
 }
-#endif // defined (_WIN32)
 
 
-// copy constructor
+
 OraError::OraError (const OraError& err):
 m_type (err.m_type),
 	m_code (err.m_code),
@@ -132,8 +122,7 @@ void OraError::oracleError(int oraErr,OCIError *errorHandle, OCIEnv *envHandle)
 {
 	bool	getDetails = false;
 
-	// prerequisites
-	assert (errorHandle != NULL || envHandle != NULL);
+	EP_ASSERT (errorHandle != NULL || envHandle != NULL);
 
 	m_code = oraErr;
 	switch (oraErr)
@@ -177,12 +166,10 @@ void OraError::oracleError(int oraErr,OCIError *errorHandle, OCIEnv *envHandle)
 	default:
 		m_description = _T("unknown");
 	}
-
-	// get detailed error description
 	if (getDetails)
 	{
 		const int	maxTextLen = 4000;
-		char	*errorText = new char [maxTextLen];
+		char	*errorText = EP_NEW char [maxTextLen];
 
 		if (errorText)
 		{
@@ -198,7 +185,7 @@ void OraError::oracleError(int oraErr,OCIError *errorHandle, OCIEnv *envHandle)
 #else // defined(_UNICODE) || defined(UNICODE)
 			m_description += errorText;
 #endif // defined(_UNICODE) || defined(UNICODE)
-			delete [] errorText;
+			EP_DELETE [] errorText;
 		}
 	}
 }
@@ -297,16 +284,15 @@ EpTString OraError::Details () const
 
 void OraError::concatMessage (const TCHAR *format, va_list va)
 {
-	// prerequisites
 	EP_ASSERT (format && va);
 
-	TCHAR *buffer = new TCHAR [ERROR_FORMAT_MAX_MSG_LEN];
+	TCHAR *buffer = EP_NEW TCHAR [ERROR_FORMAT_MAX_MSG_LEN];
 	if (buffer)
 	{
 		System::STPrintf_V(buffer,ERROR_FORMAT_MAX_MSG_LEN-1,format,va);
 		m_description += _T(": ");
 		m_description += buffer;
-		delete [] buffer;
+		EP_DELETE [] buffer;
 	}
 }
 

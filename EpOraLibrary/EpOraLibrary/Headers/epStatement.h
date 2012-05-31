@@ -49,6 +49,12 @@ namespace epol {
 	class ResultSet;
 	class Connection;
 
+	/*! 
+	@class Statement epStatement.h
+	@brief This is a class representing OracleDB SQL Statement 
+
+	Interface for the OracleDB SQL Statement.
+	*/
 	class Statement
 	{
 		// friends
@@ -57,57 +63,161 @@ namespace epol {
 
 	public:
 
-		// executes a prepared statement with no output parameters
+		/*!
+		Binds a named variable to the statement
+		*When type is set to DT_UNKNOWN type is taken from name's prefix
+		@param[in] name the name of the variable
+		@param[in] type the Data type for the parameter
+		@return the parameter binded
+		*/
+		Parameter &Bind (const TCHAR *name,DataTypesEnum type = DT_UNKNOWN);
+
+		/*!
+		Executes the prepared statement with no output parameters
+		*/
 		inline void Execute () 
 		{
 			executePrepared (); 
 		}
 
-		// executes a prepared select sql statement and returns the result set
+		/*!
+		Executes the prepared Select SQL statement and returns the result set
+		@return the result set returned by executing the SQL statement
+		*/
 		ResultSet *Select();
 
-		// releases statement
+		/*!
+		Release the self object
+		*/
 		inline void Release ()
 		{
-			delete this; 
+			EP_DELETE this; 
 		}
 
+		/*!
+		Return the flag whether statement is prepared or not
+		@return true if prepared otherwise false
+		*/
+		bool IsPrepared()
+		{
+			return m_isPrepared;
+		}
+
+		/*!
+		Return the flag whether statement is executed or not
+		@return true if executed otherwise false
+		*/
+		bool IsExecuted()
+		{
+			return m_isExecuted;
+		}
+
+		/*!
+		Return the type of the statement
+		@return The statement type
+		*/
+		StatementTypesEnum GetStmtType()
+		{
+			return m_stmtType;
+		}
+
+		/*!
+		Return the parameter binded with given name
+		@param paramName the name of the paramter binded to get
+		@return the parameter binded with given name
+		*/
+		Parameter& operator [] (const TCHAR *paramName);
+
+		/*!
+		Return the parameter binded at given index
+		@param paramIndex the index of the paramter binded to get
+		@return the parameter binded at given index
+		*/
+		Parameter& operator [] (unsigned short paramIndex);
 	private:
-		// public not creatable; use connection.execute, .prepare or .select
-		// prepares an sql statement for execution
+		/*!
+		Default Constructor
+
+		*Cannot be created publicly
+		*Use Connection::Execute/Prepare/Select
+		Prepare the statement for execution
+		@param[in] useConnection the connection object to use
+		@param[in] sqlStmt the SQL statement
+		*/
 		Statement (Connection &useConnection, const TCHAR *sqlStmt);
 
-		// public not deletable; use release method instead
+		/*!
+		Default Destructor
+		
+		Use Statement::Release instead
+		*Cannot be deleted publicly
+		*/
 		~Statement ();
 
-		// private copy-constructor and assignment operator - class could not be copied
-		Statement (const Statement& /* st */) 
+		/*!
+		Default Copy Constructor
+
+		*Class cannot be copied
+		@param stmt the Statement object to copy
+		*/
+		Statement (const Statement& stmt) 
 		{
 			/* could not be copy-constructed */ 
 		};
-		Statement& operator = (const Statement& /* st */) 
+
+		/*!
+		Copy Operator
+
+		*Class cannot be copied
+		@param stmt the Statement object to copy
+		*/
+		Statement& operator = (const Statement& stmt) 
 		{ 
 			return (*this); /* could not be copy-constructed */ 
 		};
 
-		// initialize private data
+		/*!
+		Initialize member variables
+		*/
 		void initialize ();
 
-		// free resources allocated
+		/*!
+		Release all resources allocated
+		*/
 		void cleanUp ();
 
-		// prepares an sql statement for execution
+		/*!
+		Prepare the SQL statement given for execution
+		@param[in] sqlStmt the SQL statement to prepare
+		*/
 		void prepare (const TCHAR *sqlStmt);
 
-		// executes already prepared statement
+		/*!
+		Execute the prepared statement
+		*/
 		void executePrepared ();
 
-		Connection		*m_conn;			// being used
-		OCIStmt			*m_stmtHandle;
-		std::string		m_sqlStmt;			// being executed
-		StatementTypesEnum	m_stmtType;		// of the statement
 
+
+		/// Type definition for Parameters
+		typedef std::vector <Parameter *> Parameters;
+		/// Type definition for ParametersMap
+		typedef std::map <EpTString, Parameter *> ParametersMap;
+		/// array with bound parameters
+		Parameters		m_parameters;	
+		/// a map with paramters against their names
+		ParametersMap	m_parametersMap;	
+
+		/// the connection object used
+		Connection		*m_conn;	
+		/// the statement handle
+		OCIStmt			*m_stmtHandle;
+		/// the type of the statement
+		StatementTypesEnum	m_stmtType;
+
+		/// the flag whether the statement is prepared or not
 		bool			m_isPrepared;
+		/// the flag whether the statement is executed or not
 		bool			m_isExecuted;
 
 

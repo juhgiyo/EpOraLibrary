@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "epColumn.h"
 #include "epOraError.h"
 #include "epConnection.h"
-#include <assert.h>
 
 using namespace epol;
 
@@ -60,17 +59,13 @@ void ResultSet::initialize ()
 
 void ResultSet::cleanUp ()
 {
-	// free m_columns
 	for (Columns::iterator i=m_columns.begin (); i!=m_columns.end (); ++i)
-		delete (*i);
+		EP_DELETE (*i);
 	m_columns.clear ();
 
-	// when resultset is created by statement.select - freed by statement object
-	// when created by parameter.as_resultset - freed by parameter object
 	if (m_rsHandle) 
 		m_rsHandle = NULL;
 
-	// statement attached to be released?
 	if (m_stmt) 
 		m_stmt->Release ();
 	m_stmt = NULL;
@@ -136,7 +131,6 @@ void ResultSet::describe ()
 	m_columns.reserve(count);
 	for (i=0; i<count; i++)
 	{
-		// get next column info
 		OCIParam	*paramHandle = NULL;
 		TCHAR		*paramName = NULL;
 		unsigned int nameLen = 0;
@@ -147,37 +141,27 @@ void ResultSet::describe ()
 
 		if (result == OCI_SUCCESS)
 		{
-			// column name
 			result = OCIAttrGet (paramHandle, OCI_DTYPE_PARAM, &paramName, &nameLen, OCI_ATTR_NAME, m_conn->m_errorHandle);
 		}
 
 		if (result == OCI_SUCCESS)
 		{
-			// oci data type
 			result = OCIAttrGet (paramHandle, OCI_DTYPE_PARAM, &ociType, NULL, OCI_ATTR_DATA_TYPE, m_conn->m_errorHandle);
 		}
 
 		if (result == OCI_SUCCESS)
 		{
-			// maximum data size in bytes
 			result = OCIAttrGet (paramHandle, OCI_DTYPE_PARAM, &size, NULL, OCI_ATTR_DATA_SIZE, m_conn->m_errorHandle);
 		}
 
 		if (paramHandle)
-			// ignore result code
 			OCIDescriptorFree ( paramHandle, OCI_DTYPE_PARAM);
 
-		// error situation?
 		if (result != OCI_SUCCESS)
 			throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 
-		// setup new column, alloc memory for fetch buffer, indicators and data lens;
-		// column.constructor could possibly throw an out-of-memory exception
-		// in this case resultset will be partially initialized
-		Column	*col = new Column (this, reinterpret_cast <const TCHAR *> (paramName), ociType, size, m_fetchCount);
+		Column	*col = EP_NEW Column (this, reinterpret_cast <const TCHAR *> (paramName), ociType, size, m_fetchCount);
 
-		// add to array AND to map
-		// (makes possible to address m_columns by name AND index)
 		m_columns.push_back (col);
 		m_columnsMap [col->m_colName] = col;
 	}
@@ -193,7 +177,6 @@ void ResultSet::define()
 	int	result;
 	unsigned int position;
 
-	// define all m_columns
 	position = 1;
 	result = OCI_SUCCESS;
 	for (i=m_columns.begin (); result == OCI_SUCCESS && i!=m_columns.end (); ++i)
@@ -218,8 +201,7 @@ void ResultSet::define()
 
 void ResultSet::attachStatement (Statement *selectStmt)
 {
-	// prerequisites
-	assert (selectStmt);
+	EP_ASSERT (selectStmt);
 
 	m_stmt = selectStmt;
 }
@@ -227,8 +209,7 @@ void ResultSet::attachStatement (Statement *selectStmt)
 
 void ResultSet::fetchRows ()
 {
-	// prerequisites
-	assert (m_isDescribed && m_isDefined);
+	EP_ASSERT (m_isDescribed && m_isDefined);
 
 	int	result;
 	unsigned int oldRowsCount = m_rowsFetched;
@@ -247,14 +228,11 @@ void ResultSet::fetchRows ()
 
 bool ResultSet::Next ()
 {
-	// prerequisites
-	assert (m_isDescribed && m_isDefined);
+	EP_ASSERT (m_isDescribed && m_isDefined);
 
 	m_currentRow++;
 	if (m_currentRow >= m_rowsFetched)
 		if (!m_isEod)
-			// fetch new block of rows; fetch_rows will set m_isEod on true
-			// when last block if rows has been fetched; will also update m_rowsFetched
 			fetchRows();
 		else
 			return (false);
@@ -269,7 +247,6 @@ Column& ResultSet::operator [] (const TCHAR *columnName)
 {
 	ColumnsMap::iterator i = m_columnsMap.find (columnName);
 	if (i == m_columnsMap.end ())
-		// column with such name is not found
 		throw (OraError(EC_COLUMN_NOT_FOUND, __TFILE__, __LINE__, columnName));
 	return (*(i->second));
 }
@@ -278,7 +255,6 @@ Column& ResultSet::operator [] (const TCHAR *columnName)
 Column& ResultSet::operator [] (unsigned short columnIndex)
 {
 	if (columnIndex < FIRST_COLUMN_NO || columnIndex > m_columns.size ())
-		// no column with such index
 		throw (OraError(EC_COLUMN_NOT_FOUND, __TFILE__, __LINE__, _T("%d"), (int) columnIndex));
 	return (*(m_columns.at (columnIndex - FIRST_COLUMN_NO)));
 }

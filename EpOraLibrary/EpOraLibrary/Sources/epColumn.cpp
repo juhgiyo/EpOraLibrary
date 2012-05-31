@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "epColumn.h"
-#include <assert.h>
 #include <tchar.h>
 
 #include "epOraError.h"
@@ -27,15 +26,13 @@ using namespace epol;
 
 Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize)
 {
-	// prerequisites
-	assert (rs && name);
+	EP_ASSERT (rs && name);
 
 	initialize ();
 
 	m_colName = EpTString (name);
 	m_ociType = ociDataType;
 
-	// decide the format we want oci to return data in (m_ociType member)
 	switch (ociDataType)
 	{
 	case	SQLT_INT:	// integer
@@ -66,30 +63,27 @@ Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, un
 	case	SQLT_VST:	// oci string type
 		m_ociType = SQLT_STR;
 		m_colType = DT_TEXT;
-		m_size = (maxDataSize + 1) * sizeof(TCHAR); // + 1 for terminating zero!
+		m_size = (maxDataSize + 1) * sizeof(TCHAR);
 		break;
 
 	default:
 		throw (OraError(EC_UNSUP_ORA_TYPE, __TFILE__, __LINE__, name));
 	}
 
-	// allocate memory for m_indicators, column lengths and fetched data
-	m_indicators = new short [fetchSize];
+	m_indicators = EP_NEW short [fetchSize];
 
 	if (m_colType == DT_TEXT)
-		// only text columns requires length
-		m_dataLengths = new unsigned short [fetchSize];
+		m_dataLengths = EP_NEW unsigned short [fetchSize];
 	else
 		m_dataLengths = NULL;
 
-	m_fetchBuffer = new char [m_size * fetchSize];
+	m_fetchBuffer = EP_NEW char [m_size * fetchSize];
 
 	m_defineHandle = NULL;
 
 	if (!m_indicators || !m_fetchBuffer)
 	{
-		cleanUp (); // because there could be some memory allocated
-		// no memory
+		cleanUp (); 
 		throw (OraError(EC_NO_MEMORY, __TFILE__, __LINE__));
 	}
 
@@ -118,25 +112,23 @@ void Column::initialize ()
 
 void Column::cleanUp ()
 {
-	// set all to null to be save to call cleanup more than once for a single instance
 	if (m_indicators) 
 	{
-		delete [] m_indicators; 
+		EP_DELETE [] m_indicators; 
 	}
 	m_indicators = NULL;
 	if (m_dataLengths) 
-		delete [] m_dataLengths;
+		EP_DELETE [] m_dataLengths;
 	m_dataLengths = NULL;
 	if (m_fetchBuffer) 
-		delete [] m_fetchBuffer;
+		EP_DELETE [] m_fetchBuffer;
 	m_fetchBuffer = NULL;
 }
 
 
 bool Column::IsNull () const
 {
-	// prerequisites
-	assert (m_resultSet);
+	EP_ASSERT (m_resultSet);
 
 	unsigned short	rowNo = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	return (m_indicators [rowNo] == -1);
@@ -145,8 +137,7 @@ bool Column::IsNull () const
 
 EpTString Column::ToString () const
 {
-	// prerequisites
-	assert (m_resultSet);
+	EP_ASSERT (m_resultSet);
 
 	unsigned short	row_no = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	if (m_colType == DT_TEXT &&	m_indicators [row_no] != -1)
@@ -160,8 +151,7 @@ EpTString Column::ToString () const
 
 double Column::ToDouble () const
 {
-	// prerequisites
-	assert (m_resultSet);
+	EP_ASSERT (m_resultSet);
 
 	unsigned short	rowNo = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	if (m_colType == DT_NUMBER &&
@@ -182,8 +172,7 @@ double Column::ToDouble () const
 long
 	Column::ToLong () const
 {
-	// prerequisites
-	assert (m_resultSet);
+	EP_ASSERT (m_resultSet);
 
 	unsigned short	rowNo = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	if (m_colType == DT_NUMBER &&
@@ -203,8 +192,7 @@ long
 
 DateTime Column::ToDateTime () const
 {
-	// prerequisites
-	assert (m_resultSet);
+	EP_ASSERT (m_resultSet);
 
 	unsigned short	rowNo = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	if (m_colType == DT_DATE &&

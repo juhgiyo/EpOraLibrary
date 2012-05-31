@@ -47,6 +47,12 @@ namespace epol {
 
 	class ResultSet;
 
+	/*! 
+	@class Parameter epParameter.h
+	@brief This is a class representing OracleDB Parameter 
+
+	Interface for the OracleDB Parameter.
+	*/
 	class EP_ORACLELIB Parameter
 	{
 		// friends
@@ -54,100 +60,219 @@ namespace epol {
 
 	public:
 
-		// returns whether parameter value is null
+		/*!
+		Return whether the parameter value is NULL
+		@return true if the parameter value is NULL, otherwise false
+		*/
 		inline bool IsNull () const 
 		{
-			return (m_indicator == -1); 
+			return (m_indicator == ORADATA_NULL); 
 		};
 
+		/*!
+		Returns the parameter data by converting it to String
+		@return parameter data in string format.
+		*/
 		EpTString ToString () const;
 
+		/*!
+		Returns the parameter data by converting it to double
+		@return parameter data in double format.
+		*/
 		double ToDouble () const;
 
-		// returns parameter value as a long
+		/*!
+		Returns the parameter data by converting it to long
+		@return parameter data in long format.
+		*/
 		long ToLong () const;
 
-		// returns parameter value as a date/time helper object
+		/*!
+		Returns the parameter data by converting it to DateTime
+		@return parameter data in DateTime format.
+		*/
 		DateTime ToDateTime () const;
 
-		// returns a resultset for a cursor bound variable
+		/*!
+		Return the ResultSet for a cursor bound variable
+		*/
 		ResultSet& ToResultSet ();
 
+		/*!
+		Set the parameter value to null
+		*/
+		inline void ToNull () 
+		{ 
+			m_indicator = ORADATA_NULL; 
+		}
+
+		/*!
+		Set the parameter value to given text
+		@param[in] text the text to set for parameter value
+		@return the reference to current Parameter
+		*/
+		Parameter& operator = (EpTString text);
+
+		/*!
+		Set the parameter value to given double value
+		@param[in] value the double value to set for parameter value
+		@return the reference to current Parameter
+		*/
+		Parameter& operator = (double value);
+
+		/*!
+		Set the parameter value to given long value
+		@param[in] value the long value to set for parameter value
+		@return the reference to current Parameter
+		*/
+		Parameter& operator = (long value);
+
+		/*!
+		Set the parameter value to given DateTime value
+		@param[in] value the DateTime value to set for parameter value
+		@return the reference to current Parameter
+		*/
+		Parameter& operator = (const DateTime& dateTime);
+
+		/*!
+		Return the name of the parameter
+		@return the name of the parameter
+		*/
+		inline EpTString GetName()
+		{
+			return m_paramName;
+		}
+
+		/*!
+		Return the type of the parameter
+		@return the type of the parameter
+		*/
+		inline DataTypesEnum GetType()
+		{
+			return m_paramType;
+		}
+
+		/*!
+		Return the OCI type of the parameter
+		@return the OCI type of the parameter
+		*/
+		inline unsigned short GetOciType()
+		{
+			return m_ociType;
+		}
+
 	private:
-		// public not creatable; use statement.bind instead
-		// attaches parameter to a statement
-		// when type is set to DT_UNKNOWN type is taken from name's prefix
+		/*!
+		Default Constructor
+
+		Attach the parameter to given statement
+		*Cannot be created publicly
+		*Use Statement::Bind instead
+		*When type is set to DT_UNKNOWN type is taken from name's prefix
+		@param[in] to the statement object that this parameter will bind to
+		@param[in] name the name of the parameter
+		@param[in] type the type of the parameter value
+		@param[in] fetchSize the size of fetching
+		*/
 		Parameter (Statement *to, const TCHAR *name, DataTypesEnum type = DT_UNKNOWN, unsigned int fetchSize = FETCH_SIZE);
 
+		/*!
+		Default Destructor
+		
+		*Cannot be deleted publicly
+		*/
 		~Parameter ();
 
-		// private copy-constructor and assignment operator - class could not be copied
-		Parameter ( const Parameter& /* var */) 
+		/*!
+		Default Copy Constructor
+
+		*Class cannot be copied
+		@param var the Parameter object to copy
+		*/
+		Parameter ( const Parameter&  var ) 
 		{ 
 			/* could not be copy-constructed */ 
 		};
-		Parameter& operator = (const Parameter& /* var */) 
+
+		/*!
+		Copy Operator
+
+		*Class cannot be copied
+		@param var the Parameter object to copy
+		*/
+		Parameter& operator = (const Parameter& var ) 
 		{ 
 			return (*this); /* could not be copy-constructed */ 
 		};
 
-		// initialize private data
+		/*!
+		Initialize member variables
+		*/
 		void initialize ();
 
-		// free resources allocated
+		/*!
+		Release all resources allocated
+		*/
 		void cleanUp ();
 
-		// attaches parameter to a statement
-		// when type is set to DT_UNKNOWN type is taken from name's prefix
+		/*!
+		Attach the parameter to given statement
+		*When type is set to DT_UNKNOWN type is taken from name's prefix
+		@param[in] to the statement object that this parameter will bind to
+		@param[in] name the name of the parameter
+		@param[in] type the type of the parameter value
+		@param[in] fetchSize the size of fetching
+		*/
 		void attach (Statement *to, const TCHAR *name, DataTypesEnum type = DT_UNKNOWN, unsigned int fetchSize = FETCH_SIZE);
 
-		// sets-up name, type, oci_type and size, depending on type value
-		// when type is set to DT_UNKNOWN type is taken from name's prefix
+		/*!
+		Set-up name, type, oci_type and size, depending on type value
+		*when type is set to DT_UNKNOWN type is taken from name's prefix
+		@param[in] paramName the name of the parameter
+		@param[in] type the type of the parameter
+		*/
 		void setupType (const TCHAR *paramName, DataTypesEnum type = DT_UNKNOWN);
 
-		// binds an input and/or output parameter to the statement to
+		/*!
+		Bind an input and/or output parameter to the given statement.
+		@param[in] to the statement object to bind to
+		*/
 		void bind (Statement *to);
 
-		// binds a result set - fetch_size rows will be retrieved on each step
+		/*!
+		Bind the Result Set
+		@param[in] to the statement, which this object will bind to
+		@param[in] fetchSize the number of rows, that will be retrieved on each step
+		*/
 		void bindResultSet (Statement *to,unsigned int fetchSize = FETCH_SIZE);
 
+		/// The name of the parameter (in the exact case, including leading ':')
+		EpTString		m_paramName;
+		/// the type of the parameter
+		DataTypesEnum	m_paramType;
+		/// the Oracle's data type
+		unsigned short	m_ociType;
+		/// the number of bytes required for fetching
+		unsigned short	m_size;	
 
-		// sets parameter value to null
-		inline void toNull () 
-		{ 
-			m_indicator = -1; 
-		}
+		/// the flag whether the parameter data is NULL or not
+		short m_indicator;
+		/// the number of bytes returned (used for text)
+		unsigned short m_dataLen;
+		/// the buffer for fetching
+		char *m_fetchBuffer;
 
-		// sets parameter value to some text
-		Parameter& operator = (EpTString text);
+		/// the flag whether the paramet is array or not
+		bool m_isArray;
 
-		// sets parameter value to some double
-		Parameter& operator = (double value);
-
-		// sets parameter value to some long
-		Parameter& operator = (long value);
-
-		// sets parameter value to some date/time
-		Parameter& operator = (const DateTime& dateTime);
-
-
-		EpTString		m_paramName;		// in the exact case, including leading ':'
-		DataTypesEnum	m_paramType;		// as it will be returned
-		unsigned short				m_ociType;		// oracle's data type
-		unsigned short				m_size;			// number of bytes required for
-
-		short				m_indicator;		// 0 - ok; -1 - null
-		unsigned short				m_dataLen;		// number of bytes returned (used for text)
-		char			*m_fetchBuffer;	// where data is returned
-
-		bool			m_isArray;		// with values?
-
-		Statement		*m_stmt;			// parameter is bound to
-		OCIBind			*m_bindHandle;
-		OCIStmt			*m_rsHandle;		// if parameter is a result set
-		ResultSet		*m_resultSet;	// if parameter is a result set
-
-
+		/// the statement object that this parameter will bind to
+		Statement *m_stmt;
+		/// the bind handle
+		OCIBind	*m_bindHandle;
+		/// Oracle statement handle
+		OCIStmt	*m_rsHandle;
+		/// Result Set handle
+		ResultSet *m_resultSet;
 
 	}; // parameter class
 

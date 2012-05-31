@@ -44,57 +44,122 @@ using namespace epl;
 
 namespace epol
 {
+	/*! 
+	@class Column epColumn.h
+	@brief This is a class representing OracleDB Table Column 
+
+	Interface for the OracleDB Table Column class.
+	*/
 	class EP_ORACLELIB Column
 	{
 		friend class ResultSet;
 	public:
-		// returns whether column value is null
+		/*!
+		Returns whether column value is NULL
+		@return true if column value is NULL otherwise false.
+		*/
 		bool IsNull () const;
 
+		/*!
+		Returns the column data by converting it to String
+		@return column data in string format.
+		*/
 		EpTString ToString() const;
 
+		/*!
+		Returns the column data by converting it to double
+		@return column data in double format.
+		*/
 		double ToDouble() const;
 
+		/*!
+		Returns the column data by converting it to long
+		@return column data in long format.
+		*/
 		long ToLong () const;
 
+		/*!
+		Returns the column data by converting it to DateTime
+		@return column data in DateTime format.
+		*/
 		DateTime ToDateTime() const;
 
 	private:
-		// public not creatable; use connection.select or statement.select
-		// attaches this column to a result set; allocates memory for the fetch buffer
+
+		/*!
+		Default Constructor
+
+		*Cannot be created publicly
+		*Use Connection::Select or Statement::Select
+		@param[in] rs the result set that holds this column
+		@param[in] name the name of the column
+		@param[in] ociDataType the data type of this column
+		@param[in] maxDataSize the maximum data size of data type given
+		@param[in] fetchSize the size of fetching
+		*/
 		Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize = FETCH_SIZE);
 
-		// public not deletable; deleted, when result set is released
+		/*!
+		Default Destructor
+		
+		Deleted when result set is released.
+		*Cannot be deleted publicly
+		*/
 		~Column ();
 
-		// initialize data members
+		/*!
+		Initialize member variables
+		*/
 		void initialize ();
 
-		// free resources allocated
+		/*!
+		Release all resources allocated
+		*/
 		void cleanUp ();
 
-		// private copy-constructor and assignment operator - class could not be copied
-		Column (const Column& /* col */) 
+		/*!
+		Default Copy Constructor
+
+		*Class cannot be copied
+		@param col the column object to copy
+		*/
+		Column (const Column&  col ) 
 		{ 
 			/* could not be copy-constructed */ 
 		}
-		Column& operator = (const Column& /* col */) 
+
+		/*!
+		Copy Operator
+
+		*Class cannot be copied
+		@param col the column object to copy
+		*/
+		Column& operator = (const Column& col) 
 		{
 			return (*this); /* could not be assigned */ 
 		}
 
 
-		EpTString m_colName;		// in the exact case
-		DataTypesEnum m_colType;		// as it will be returned
-		unsigned short m_ociType;		// oracle's data type
-		int	m_size;			// number of bytes required for
+		/// the name of the column
+		EpTString m_colName;	
+		/// the type of the column
+		DataTypesEnum m_colType;
+		/// the Oracle's data type
+		unsigned short m_ociType;
+		/// the number of bytes required for data
+		int	m_size;
 
-		short* m_indicators;	// an array with indicators: 0 - ok; -1 - null
-		unsigned short* m_dataLengths;		// an array with data lengths (for text columns)
-		char* m_fetchBuffer;	// where data is returned (fetched)
+		/// array with indicators
+		short* m_indicators;	
+		/// array with data lengths (for text columns)
+		unsigned short* m_dataLengths;	
+		/// the buffer which holds the data (fetched)
+		char* m_fetchBuffer;	
 
-		OCIDefine* m_defineHandle;	// used for the column
-		ResultSet* m_resultSet;	// is the column's owner
+		/// handle for column
+		OCIDefine* m_defineHandle;
+		/// the owner result set of this column
+		ResultSet* m_resultSet;	
 
 
 	}; 

@@ -43,6 +43,12 @@ namespace epol
 	class Statement;
 	class ResultSet;
 
+	/*! 
+	@class Connection epConnection.h
+	@brief This is a class representing OracleDB Connection
+
+	Interface for the OracleDB Connection class.
+	*/
 	class EP_ORACLELIB Connection
 	{
 		// friends
@@ -53,71 +59,147 @@ namespace epol
 
 
 	public:
+		/*!
+		Default Constructor
+
+		Initializes the connection object
+		*/
 		Connection ();
 
-		// create an instance and open the connection
+		/*!
+		Default Constructor
+
+		Create an instance of connection and open the connection to OracleDB
+		@param[in] serviceName the name of the service
+		@param[in] loginID the login ID for OracleDB
+		@param[in] password the password for given login ID
+		@param[in] envMode the Oracle Environment Mode
+		@param[in] nonBlockingMode the flag for whether OracleDB Operation is blocking or not
+		*/
 		Connection (const TCHAR *serviceName, const TCHAR *loginID,const TCHAR *password, unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
 
 		~Connection ();
 
-		// connects to an Oracle server
+		/*!
+		Connects to the OracleDB with given information
+		@param[in] serviceName the name of the service
+		@param[in] loginID the login ID for OracleDB
+		@param[in] password the password for given login ID
+		@param[in] envMode the Oracle Environment Mode
+		@param[in] nonBlockingMode the flag for whether OracleDB Operation is blocking or not
+		*/
 		void Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
 
-		// closes the connection
+		/*!
+		Close the connection
+		*/
 		void Close ();
 
-		// executes a sql statement with no result
+		/*!
+		Execute the given SQL statement
+		@param[in] sqlStmt the SQL statement to execute.
+		*/
 		void Execute (const TCHAR *sqlStmt);
 
-		// prepares (and returns) a sql statement for execution
+		/*!
+		Prepare the SQL statement given for execution, and return the statement instance.
+		@param[in] sqlStmt the SQL statement to prepare.
+		@return the statement instance with given SQL statement.
+		*/
 		Statement *Prepare (const TCHAR *sqlStmt);
 
-		// executes a select sql statement and return the result set
+		/*!
+		Execute the SQL statement given, and return the result set.
+		@param[in] sqlStmt the SQL statement to execute.
+		@return the result set which resulted by executing given SQL statement.
+		*/
 		ResultSet *Select (const TCHAR *selectStmt);
 
-		// commits changes
+		/*!
+		Commit the changes made.
+		*/
 		inline void Commit ()
 		{ 
 			Execute (_T("commit")); 
-		};
+		}
 
-		// rollbacks changes
-		inline void rollback ()
+		/*!
+		Roll back the changes made.
+		*/
+		inline void Rollback ()
 		{ 
 			Execute (_T("rollback")); 
-		};
+		}
 
+		/*!
+		Return whether connected to OracleDB
+		@return true if connected, otherwise false.
+		*/
+		inline bool IsConnected()
+		{
+			return m_isOpened;
+		}
+
+		/*!
+		Return whether mode is blocking or not
+		@return true if the mode is blocking, otherwise false.
+		*/
+		inline bool IsBlocking()
+		{
+			return m_isBlocking;
+		}
 
 	private:
-		// private copy-constructor and assignment operator - class could not be copied
-		inline Connection (const Connection& /* cn */) 
+		/*!
+		Default Copy Constructor
+
+		*Class cannot be copied
+		@param conn the connection object to copy
+		*/
+		inline Connection (const Connection& conn ) 
 		{
 			/* could not be copy-constructed */ 
-		};
-		inline Connection& operator = (const Connection& /* cn */) 
+		}
+
+		/*!
+		Copy Operator
+
+		*Class cannot be copied
+		@param conn the connection object to copy
+		*/
+		inline Connection& operator = (const Connection& conn) 
 		{
 			return (*this); /* could not be copy-constructed */ 
-		};
+		}
 
-		// initialize private data
+		/*!
+		Initialize the member variables
+		*/
 		void initialize ();
 
-		// free resources allocated
+		/*!
+		Release all resources allocated
+		*/
 		inline void cleanUp () 
 		{
 			Close (); 
 		};
 
-
+		/// environment handle
 		OCIEnv		*m_envHandle;
+		/// server handle
 		OCIServer	*m_serverHandle;
-		mutable OCIError	*m_errorHandle;	// because it could be changed by most oracle APIs
+		/// error handle
+		mutable OCIError	*m_errorHandle;
+		/// session handle
 		OCISession	*m_sessionHandle;
+		/// svc context handle
 		OCISvcCtx	*m_svcContextHandle;
 
+		/// flag whether connected to OracleDB or not
 		bool		m_isOpened;
-		bool		m_isAvailable;			// (used for connection pooling)?
-		bool		m_isBlocking;			// mode (a call could return OCI_STILL_EXECUTING)
+		/// flag whether the mode is blocking or not
+		bool		m_isBlocking;
 
 	};
 

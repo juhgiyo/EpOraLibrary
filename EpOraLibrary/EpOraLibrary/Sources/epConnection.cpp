@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "epConnection.h"
-#include <assert.h>
 #include "epOraError.h"
 #include "epStatement.h"
 #include "epResultSet.h"
@@ -48,7 +47,7 @@ Connection::Connection (const TCHAR *serviceName, const TCHAR *loginID,const TCH
 
 Connection::~Connection ()
 {
-	cleanUp (); // calls close
+	cleanUp (); 
 }
 
 
@@ -61,16 +60,14 @@ void Connection::initialize ()
 	m_svcContextHandle = NULL;
 
 	m_isOpened = false;
-	m_isAvailable = false;
 	m_isBlocking = false;
 }
 
 
 void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode, bool nonBlockingMode)
 {
-	// prerequisites
-	assert (serviceName && loginID && password);
-	assert (!m_isOpened);
+	EP_ASSERT (serviceName && loginID && password);
+	EP_ASSERT (!m_isOpened);
 
 	int	result;
 
@@ -144,7 +141,6 @@ void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR
 	if (result == OCI_SUCCESS)
 	{
 		m_isOpened = true;
-		m_isAvailable = true;
 		m_isBlocking = !nonBlockingMode;
 	}
 	else
@@ -156,9 +152,6 @@ void Connection::Close ()
 {
 	int	result;
 
-	// no prerequisites
-
-	// just in case switch server to blocking mode
 	if (m_serverHandle != NULL)
 	{
 		unsigned char attrValue;
@@ -169,7 +162,6 @@ void Connection::Close ()
 	else
 		result = OCI_SUCCESS;
 
-	// end session
 	if (m_svcContextHandle != NULL && m_errorHandle != NULL)
 	{
 		if (m_sessionHandle != NULL)
@@ -177,14 +169,12 @@ void Connection::Close ()
 		else
 			result = OCI_SUCCESS;
 
-		// detach from the oracle server
 		if (result == OCI_SUCCESS)
 			result = OCIServerDetach (m_serverHandle, m_errorHandle, OCI_DEFAULT);
 	}
 	else
 		result = OCI_SUCCESS;
 
-	// free handles
 	if (result == OCI_SUCCESS && m_svcContextHandle != NULL)
 		result = OCIHandleFree ( m_svcContextHandle, OCI_HTYPE_SVCCTX);
 
@@ -218,7 +208,6 @@ void Connection::Close ()
 	if (result == OCI_SUCCESS)
 	{
 		m_isOpened = false;
-		m_isAvailable = false;
 		m_isBlocking = false;
 	}
 }
@@ -226,8 +215,7 @@ void Connection::Close ()
 
 void Connection::Execute (const TCHAR *sqlStmt)
 {
-	// prerequisites
-	assert (sqlStmt);
+	EP_ASSERT (sqlStmt);
 	Statement st (*this, sqlStmt);
 	st.executePrepared ();
 }
@@ -235,16 +223,14 @@ void Connection::Execute (const TCHAR *sqlStmt)
 
 Statement* Connection::Prepare (const TCHAR *sqlStmt)	
 {
-	// prerequisites
-	assert (sqlStmt);
-	return (new Statement (*this, sqlStmt));
+	EP_ASSERT (sqlStmt);
+	return (EP_NEW Statement (*this, sqlStmt));
 }
 
 
 ResultSet* Connection::Select (const TCHAR *selectStmt)
 {
-	// prerequisites
-	assert (selectStmt);
+	EP_ASSERT (selectStmt);
 
 	Statement	*statement = Prepare (selectStmt);
 	try

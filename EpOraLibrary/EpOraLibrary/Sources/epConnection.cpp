@@ -13,7 +13,7 @@ Connection::Connection ()
 }
 
 
-Connection::Connection (const char *serviceName, const char *loginID,const char *password, unsigned long envMode, bool nonBlockingMode)
+Connection::Connection (const TCHAR *serviceName, const TCHAR *loginID,const TCHAR *password, unsigned long envMode, bool nonBlockingMode)
 {
 	initialize ();
 	try
@@ -48,7 +48,7 @@ void Connection::initialize ()
 }
 
 
-void Connection::Open (const char *serviceName,const char *loginID,const char *password,unsigned long envMode, bool nonBlockingMode)
+void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode, bool nonBlockingMode)
 {
 	// prerequisites
 	assert (serviceName && loginID && password);
@@ -57,13 +57,17 @@ void Connection::Open (const char *serviceName,const char *loginID,const char *p
 	int	result;
 
 	// allocate an environment handle
+#if defined(_UNICODE) || defined(UNICODE)
+	result = OCIEnvNlsCreate(&m_envHandle,envMode,NULL,NULL,NULL,0,NULL,NULL,OCI_UTF16ID,OCI_UTF16ID);
+#else //defined(_UNICODE) || defined(UNICODE)
 	result = OCIEnvCreate ( &m_envHandle, envMode, NULL, NULL, NULL, NULL, 0, NULL);
+#endif //defined(_UNICODE) || defined(UNICODE)
 
 	// allocate a server handle
 	if (result == OCI_SUCCESS)
 		result = OCIHandleAlloc (m_envHandle, (void **) &m_serverHandle, OCI_HTYPE_SERVER, 0,NULL);	
 	else
-		throw (OraError(EC_ENV_CREATE_FAILED, __FILE__, __LINE__));
+		throw (OraError(EC_ENV_CREATE_FAILED, __TFILE__, __LINE__));
 
 	// allocate an error handle
 	if (result == OCI_SUCCESS)
@@ -71,36 +75,36 @@ void Connection::Open (const char *serviceName,const char *loginID,const char *p
 
 	// create a server context
 	if (result == OCI_SUCCESS)
-		result = OCIServerAttach (m_serverHandle, m_errorHandle, (text *) serviceName, strlen (serviceName), OCI_DEFAULT);
+		result = OCIServerAttach (m_serverHandle, m_errorHandle, (text *) serviceName, System::TcsLen(serviceName)*sizeof(TCHAR), OCI_DEFAULT);
 	else
-		throw (OraError(result, m_envHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_envHandle, __TFILE__, __LINE__));
 
 	// allocate a service handle
 	if (result == OCI_SUCCESS)
 		result = OCIHandleAlloc ( m_envHandle, (void **) &m_svcContextHandle, OCI_HTYPE_SVCCTX, 0, NULL);
 	else
-		throw (OraError(result, m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_errorHandle, __TFILE__, __LINE__));
 
 	// set the server attribute in the service context handle
 	if (result == OCI_SUCCESS)
 		result = OCIAttrSet ( m_svcContextHandle, OCI_HTYPE_SVCCTX, m_serverHandle, sizeof (OCIServer *), OCI_ATTR_SERVER, m_errorHandle);
 	else
-		throw (OraError(result, m_envHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_envHandle, __TFILE__, __LINE__));
 
 	// allocate a user session handle
 	if (result == OCI_SUCCESS)
 		result = OCIHandleAlloc ( m_envHandle, (void **) &m_sessionHandle, OCI_HTYPE_SESSION, 0, NULL);
 	else
-		throw (OraError(result, m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_errorHandle, __TFILE__, __LINE__));
 
 	// set username and password attributes in user session handle
 	if (result == OCI_SUCCESS)
-		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (text *) loginID, strlen (loginID), OCI_ATTR_USERNAME, m_errorHandle);
+		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) loginID, System::TcsLen (loginID)*sizeof(TCHAR), OCI_ATTR_USERNAME, m_errorHandle);
 	else
-		throw (OraError(result, m_envHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_envHandle, __TFILE__, __LINE__));
 
 	if (result == OCI_SUCCESS)
-		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (text *) password, strlen (password), OCI_ATTR_PASSWORD, m_errorHandle);
+		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) password, System::TcsLen (password)*sizeof(TCHAR), OCI_ATTR_PASSWORD, m_errorHandle);
 
 	// start the session
 	if (result == OCI_SUCCESS)
@@ -126,7 +130,7 @@ void Connection::Open (const char *serviceName,const char *loginID,const char *p
 		m_isBlocking = !nonBlockingMode;
 	}
 	else
-		throw (OraError(result, m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_errorHandle, __TFILE__, __LINE__));
 }
 
 
@@ -202,31 +206,31 @@ void Connection::Close ()
 }
 
 
-void Connection::Execute (const char *sqlStmt, int sqlStmtLen)
+void Connection::Execute (const TCHAR *sqlStmt)
 {
 	// prerequisites
 	assert (sqlStmt);
 
-	Statement st (*this, sqlStmt, sqlStmtLen);
+	Statement st (*this, sqlStmt);
 	st.executePrepared ();
 }
 
 
-Statement* Connection::Prepare (const char *sqlStmt,int sqlStmtLen)	
+Statement* Connection::Prepare (const TCHAR *sqlStmt)	
 {
 	// prerequisites
 	assert (sqlStmt);
 
-	return (new Statement (*this, sqlStmt, sqlStmtLen));
+	return (new Statement (*this, sqlStmt));
 }
 
 
-ResultSet* Connection::Select (const char *selectStmt, int selectStmtLen)
+ResultSet* Connection::Select (const TCHAR *selectStmt)
 {
 	// prerequisites
 	assert (selectStmt);
 
-	Statement	*statement = Prepare (selectStmt, selectStmtLen);
+	Statement	*statement = Prepare (selectStmt);
 	try
 	{
 		ResultSet	*result = statement->Select ();

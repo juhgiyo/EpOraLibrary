@@ -3,6 +3,8 @@
 #include "epOraLib.h"
 #include "oci.h"
 #include <string>
+
+using namespace epl;
 namespace epol {
 
 
@@ -40,18 +42,16 @@ namespace epol {
 	{
 	public:
 		// oracle error via error handle
-		OraError (int oraErr,OCIError *errorHandle, const char *sourceName = NULL, long lineNumber = -1, const char *format = NULL, ...);
+		OraError (int oraErr,OCIError *errorHandle, const TCHAR *sourceName = NULL, long lineNumber = -1, const TCHAR *format = NULL, ...);
 
 		// oracle error via environment handle
-		OraError (int oraErr, OCIEnv *envHandle,const char *sourceName = NULL, long lineNumber = -1, const char *format = NULL,...);
+		OraError (int oraErr, OCIEnv *envHandle,const TCHAR *sourceName = NULL, long lineNumber = -1, const TCHAR *format = NULL,...);
 
 		// library error
-		OraError (int oralibErr, const char *sourceName = NULL, long lineNumber = -1, const char *format = NULL,...);
+		OraError (int oralibErr, const TCHAR *sourceName = NULL, long lineNumber = -1, const TCHAR *format = NULL,...);
 
-#if	defined (_WIN32)
 		// winapi error
-		OraError (const char *sourceName = NULL, long lineNumber = -1,const char *format = NULL, ...);
-#endif
+		OraError (const TCHAR *sourceName = NULL, long lineNumber = -1,const TCHAR *format = NULL, ...);
 
 		// copy constructor
 		OraError (const OraError& err);
@@ -59,12 +59,7 @@ namespace epol {
 		~OraError ();
 
 		// return error details (in a format, similar to display method output)
-		std::string	Details() const;
-
-#if	!defined (ORALIB_NO_ERROR_DISPLAY)
-		// dumps error details to cout
-		void	Display();
-#endif
+		EpTString Details() const;
 
 	private:
 
@@ -80,22 +75,19 @@ namespace epol {
 		// sets-up a library error details
 		void oralibError (int oralibErr);
 
-#if	defined (_WIN32)
 		// sets-up a winapi call error details
 		void winapiError (void);
-#endif
 
 		// formats printf-like message and concats it to the description
-		void concatMessage (const char *format, va_list va);
+		void concatMessage (const TCHAR *format, va_list va);
 
 		ErrorTypesEnum	m_type;		// type
 		int		m_code;			// error code if library error or -1 if Oracle error
 		unsigned int m_oraCode;		// Oracle's error code - ORA-xxxxx
-#if	defined (_WIN32)
 		unsigned long	m_winapiCode;	// win32 api error code (Windows platform only!)
-#endif
-		std::string	m_description;	// error description as a text
-		std::string	m_source;			// source file, where error was thrown (optional)
+
+		EpTString	m_description;	// error description as a text
+		EpTString	m_source;			// source file, where error was thrown (optional)
 		long		m_lineNo;		// line number, where error was thrown (optional)
 
 	};

@@ -33,7 +33,7 @@ namespace epol {
 		bool Next ();
 
 		// access columns in the current row by name or index
-		Column& operator [] (const char *columnName);
+		Column& operator [] (const TCHAR *columnName);
 		Column& operator [] (unsigned short columnIndex);
 
 		inline void Release () 
@@ -87,7 +87,7 @@ namespace epol {
 
 
 		typedef std::vector <Column*>	Columns;
-		typedef std::map <std::string, Column*>	ColumnsMap;
+		typedef std::map <EpTString, Column*>	ColumnsMap;
 		Columns			m_columns;		// an array with result set columns
 		ColumnsMap		m_columnsMap;	// a map with columns against their names
 

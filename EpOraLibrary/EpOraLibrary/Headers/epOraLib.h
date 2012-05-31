@@ -1,6 +1,7 @@
 /*! 
 @file epOraLib.h
 @author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
+		<http://github.com/juhgiyo/eporalibrary>
 @date May 24, 2012
 @brief EP Oracle Library Interface
 @version 2.0
@@ -81,5 +82,7 @@ enum ParameterPrefixesEnum
 
 // index of the first parameter in a statement (one of 0, 1)
 #define FIRST_PARAMETER_NO 1
+
+#include "epl.h"
 
 #endif //__EP_ORACLE_LIB_H__

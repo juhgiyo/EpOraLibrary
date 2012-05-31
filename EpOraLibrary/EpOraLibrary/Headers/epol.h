@@ -30,11 +30,12 @@ An Interface for EP Oracle Library
 #ifndef __EP_EPOL_H__
 #define __EP_EPOL_H__
 
-// Algo
 #include "epColumn.h"
 #include "epConnection.h"
+#include "epDateTime.h"
 #include "epOraError.h"
 #include "epParameter.h"
 #include "epResultSet.h"
 #include "epStatement.h"
+
 #endif //__EP_EPOL_H__

@@ -5,6 +5,8 @@
 #include <vector>
 #include <map>
 #include "oci.h"
+
+using namespace epl;
 namespace epol {
 	
 	class ResultSet;
@@ -34,7 +36,7 @@ namespace epol {
 	public:
 		// binds a named variable to the statement
 		// when type is set to DT_UNKNOWN type is taken from name's prefix
-		Parameter &Bind (const char *name, DataTypesEnum dateType = DT_UNKNOWN);
+		Parameter &Bind (const TCHAR *name, DataTypesEnum dateType = DT_UNKNOWN);
 
 		// executes a prepared statement with no output parameters
 		inline void Execute () 
@@ -52,14 +54,14 @@ namespace epol {
 		}
 
 		// returns a bound parameter by name or index
-		Parameter& operator [] (const char *paramName);
+		Parameter& operator [] (const TCHAR *paramName);
 		Parameter& operator [] (unsigned short paramIndex);
 
 
 	private:
 		// public not creatable; use connection.execute, .prepare or .select
 		// prepares an sql statement for execution
-		Statement (Connection &useConnection, const char *sqlStmt, int sqlStmtLen = -1);
+		Statement (Connection &useConnection, const TCHAR *sqlStmt);
 
 		// public not deletable; use release method instead
 		~Statement ();
@@ -81,7 +83,7 @@ namespace epol {
 		void cleanUp ();
 
 		// prepares an sql statement for execution
-		void prepare (const char *sqlStmt, int sqlLen = -1);
+		void prepare (const TCHAR *sqlStmt);
 
 		// executes already prepared statement
 		void executePrepared ();
@@ -92,7 +94,7 @@ namespace epol {
 		StatementTypesEnum	m_stmtType;		// of the statement
 
 		typedef std::vector <Parameter *> Parameters;
-		typedef std::map <std::string, Parameter *> ParametersMap;
+		typedef std::map <EpTString, Parameter *> ParametersMap;
 		Parameters		m_parameters;		// an array with bound parameters
 		ParametersMap	m_parametersMap;	// a map with parameters against their names
 

@@ -21,35 +21,35 @@ namespace epol
 		Connection ();
 
 		// create an instance and open the connection
-		Connection (const char *serviceName, const char *loginID,const char *password, unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
+		Connection (const TCHAR *serviceName, const TCHAR *loginID,const TCHAR *password, unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
 
 		~Connection ();
 
 		// connects to an Oracle server
-		void Open (const char *serviceName,const char *loginID,const char *password,unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
+		void Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
 
 		// closes the connection
 		void Close ();
 
 		// executes a sql statement with no result
-		void Execute (const char *sqlStmt, int sqlStmtLen = -1);
+		void Execute (const TCHAR *sqlStmt);
 
 		// prepares (and returns) a sql statement for execution
-		Statement *Prepare (const char *sqlStmt,int sqlStmtLen = -1);
+		Statement *Prepare (const TCHAR *sqlStmt);
 
 		// executes a select sql statement and return the result set
-		ResultSet *Select (const char *selectStmt, int selectStmtLen = -1);
+		ResultSet *Select (const TCHAR *selectStmt);
 
 		// commits changes
 		inline void Commit ()
 		{ 
-			Execute ("commit", 6); 
+			Execute (_T("commit")); 
 		};
 
 		// rollbacks changes
 		inline void rollback ()
 		{ 
-			Execute ("rollback", 8); 
+			Execute (_T("rollback")); 
 		};
 
 

@@ -7,14 +7,14 @@
 #include "epConnection.h"
 using namespace epol;
 
-Column::Column (ResultSet *rs, const char *name, unsigned int nameLen, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize)
+Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize)
 {
 	// prerequisites
 	assert (rs && name);
 
 	initialize ();
 
-	m_colName = std::string (name, nameLen);
+	m_colName = EpTString (name);
 	m_ociType = ociDataType;
 
 	// decide the format we want oci to return data in (m_ociType member)
@@ -29,14 +29,14 @@ Column::Column (ResultSet *rs, const char *name, unsigned int nameLen, unsigned 
 	case	SQLT_VNU:	// numeric with length
 	case	SQLT_PDN:	// packed decimal
 		m_ociType = SQLT_VNU;
-		m_colName = DT_NUMBER;
+		m_colType = DT_NUMBER;
 		m_size = sizeof (OCINumber);
 		break;
 
 	case	SQLT_DAT:	// date
 	case	SQLT_ODT:	// oci date - should not appear?
 		m_ociType = SQLT_ODT;
-		m_colName = DT_DATE;
+		m_colType = DT_DATE;
 		m_size = sizeof (OCIDate);
 		break;
 
@@ -47,12 +47,12 @@ Column::Column (ResultSet *rs, const char *name, unsigned int nameLen, unsigned 
 	case	SQLT_AVC:	// ansi var char
 	case	SQLT_VST:	// oci string type
 		m_ociType = SQLT_STR;
-		m_colName = DT_TEXT;
+		m_colType = DT_TEXT;
 		m_size = (maxDataSize + 1) * sizeof(TCHAR); // + 1 for terminating zero!
 		break;
 
 	default:
-		throw (OraError(EC_UNSUP_ORA_TYPE, __FILE__, __LINE__, name));
+		throw (OraError(EC_UNSUP_ORA_TYPE, __TFILE__, __LINE__, name));
 	}
 
 	// allocate memory for m_indicators, column lengths and fetched data
@@ -72,7 +72,7 @@ Column::Column (ResultSet *rs, const char *name, unsigned int nameLen, unsigned 
 	{
 		cleanUp (); // because there could be some memory allocated
 		// no memory
-		throw (OraError(EC_NO_MEMORY, __FILE__, __LINE__));
+		throw (OraError(EC_NO_MEMORY, __TFILE__, __LINE__));
 	}
 
 	m_resultSet = rs;
@@ -125,16 +125,18 @@ bool Column::IsNull () const
 }
 
 
-Pstr Column::ToString () const
+EpTString Column::ToString () const
 {
 	// prerequisites
 	assert (m_resultSet);
 
 	unsigned short	row_no = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	if (m_colType == DT_TEXT &&	m_indicators [row_no] != -1)
-		return (reinterpret_cast <Pstr> (m_fetchBuffer + m_size * row_no));
+	{
+		return EpTString(reinterpret_cast<TCHAR*>(m_fetchBuffer + m_size * row_no));
+	}
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -152,10 +154,10 @@ double Column::ToDouble () const
 		if (result == OCI_SUCCESS)
 			return (value);
 		else
-			throw (OraError(result, m_resultSet->m_conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_resultSet->m_conn->m_errorHandle, __TFILE__, __LINE__));
 	}
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -174,10 +176,10 @@ long
 		if (result == OCI_SUCCESS)
 			return (value);
 		else
-			throw (OraError(result, m_resultSet->m_conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_resultSet->m_conn->m_errorHandle, __TFILE__, __LINE__));
 	}
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -191,6 +193,6 @@ DateTime Column::ToDateTime () const
 		m_indicators [rowNo] != -1)
 		return (DateTime (*(reinterpret_cast <OCIDate *> (m_fetchBuffer) + rowNo)));
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 

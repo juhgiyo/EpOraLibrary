@@ -110,7 +110,7 @@ namespace epol
 
 		/*!
 		Execute the SQL statement given, and return the result set.
-		@param[in] sqlStmt the SQL statement to execute.
+		@param[in] selectStmt the SQL statement to execute.
 		@return the result set which resulted by executing given SQL statement.
 		*/
 		ResultSet *Select (const TCHAR *selectStmt);

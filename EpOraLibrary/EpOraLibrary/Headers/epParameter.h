@@ -129,7 +129,7 @@ namespace epol {
 
 		/*!
 		Set the parameter value to given DateTime value
-		@param[in] value the DateTime value to set for parameter value
+		@param[in] dateTime the DateTime value to set for parameter value
 		@return the reference to current Parameter
 		*/
 		Parameter& operator = (const DateTime& dateTime);

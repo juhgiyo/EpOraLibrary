@@ -6,9 +6,10 @@
 #include "epConnection.h"
 #include <tchar.h>
 
+using namespace epl;
 using namespace epol;
 
-Parameter::Parameter (Statement *to, const char *name, DataTypesEnum type, unsigned int fetchSize)		// = FETCH_SIZE
+Parameter::Parameter (Statement *to, const TCHAR *name, DataTypesEnum type, unsigned int fetchSize)		// = FETCH_SIZE
 {
 	initialize ();
 	try
@@ -71,7 +72,7 @@ void Parameter::cleanUp ()
 }
 
 
-void Parameter::attach (Statement *to, const char *name, DataTypesEnum type, unsigned int fetchSize)
+void Parameter::attach (Statement *to, const TCHAR *name, DataTypesEnum type, unsigned int fetchSize)
 {
 	// prerequisites
 	assert (name && to);
@@ -98,12 +99,12 @@ void Parameter::attach (Statement *to, const char *name, DataTypesEnum type, uns
 }
 
 
-void Parameter::setupType (const char *paramName, DataTypesEnum type)
+void Parameter::setupType (const TCHAR *paramName, DataTypesEnum type)
 {
 	// prerequisites
 	assert (paramName);
 
-	const char	*pParamName = paramName;
+	const TCHAR	*pParamName = paramName;
 
 	if (pParamName [0] == ':')
 		pParamName++;
@@ -142,7 +143,7 @@ void Parameter::setupType (const char *paramName, DataTypesEnum type)
 	}
 	else
 		// unrecognized data type
-		throw (OraError(EC_BAD_PARAM_PREFIX, __FILE__, __LINE__, paramName));
+		throw (OraError(EC_BAD_PARAM_PREFIX, __TFILE__, __LINE__, paramName));
 }
 
 
@@ -166,29 +167,28 @@ void Parameter::bind (Statement *to)
 		break;
 
 	case	DT_TEXT:
-		*((wchar_t *) m_fetchBuffer) = L'\0';
+		*((wchar_t *) m_fetchBuffer) = _T('\0');
 		break;
 
 	default:
 		assert (FALSE);
-		throw (OraError(EC_INTERNAL, __FILE__, __LINE__, "Unsupported internal type"));
+		throw (OraError(EC_INTERNAL, __TFILE__, __LINE__, _T("Unsupported internal type")));
 	}
 
 	// bind
-	m_dataLen = static_cast<sb2> (m_size);
-	result = OCIBindByName (to->m_stmtHandle, &m_bindHandle, to->m_conn->m_errorHandle, (text *) (m_paramName.data ()), m_paramName.length (), m_fetchBuffer, m_size, m_ociType, &m_indicator,	&m_dataLen,	NULL,0,	NULL,OCI_DEFAULT);
+	m_dataLen = static_cast<short> (m_size);
+	result = OCIBindByName (to->m_stmtHandle, &m_bindHandle, to->m_conn->m_errorHandle, (unsigned char *) (m_paramName.data ()), m_paramName.length ()*sizeof(TCHAR), m_fetchBuffer, m_size, m_ociType, &m_indicator,	&m_dataLen,	NULL,0,	NULL,OCI_DEFAULT);
 
-#if defined (UNICODE)
-	// request/pass text parameters as unicode (2.0)
+#if defined(_UNICODE) || defined(UNICODE)
 	if (result == OCI_SUCCESS)
 	{
-		unsigned int value = OCI_UCS2ID;
+		unsigned int value = OCI_UTF16ID;
 		result = OCIAttrSet (m_bindHandle, OCI_HTYPE_BIND, &value, sizeof (value), OCI_ATTR_CHARSET_ID, to->m_conn->m_errorHandle);
 	}
-#endif // UNICODE defined?
+#endif // defined(_UNICODE) || defined(UNICODE)
 
 	if (result != OCI_SUCCESS)
-		throw (OraError(result, to->m_conn->m_errorHandle, __FILE__, __LINE__, m_paramName.c_str ()));
+		throw (OraError(result, to->m_conn->m_errorHandle, __TFILE__, __LINE__, m_paramName.c_str ()));
 	m_stmt = to;
 }
 
@@ -205,52 +205,59 @@ void Parameter::bindResultSet (Statement *to, unsigned int fetchSize)
 
 	// bind statement handle as result set
 	if (result == OCI_SUCCESS)
-		result = OCIBindByName ( to->m_stmtHandle,&m_bindHandle, to->m_conn->m_errorHandle,(text *) m_paramName.data (),m_paramName.length (), &m_rsHandle, m_size, m_ociType, NULL, NULL, NULL, 0, NULL, OCI_DEFAULT);
+	{
+		result = OCIBindByName ( to->m_stmtHandle,&m_bindHandle, to->m_conn->m_errorHandle,(text *) m_paramName.data (),m_paramName.length ()*sizeof(TCHAR), &m_rsHandle, m_size, m_ociType, NULL, NULL, NULL, 0, NULL, OCI_DEFAULT);
+#if defined(_UNICODE) || defined(UNICODE)
+		if (result == OCI_SUCCESS)
+		{
+			unsigned int value = OCI_UTF16ID;
+			result = OCIAttrSet (m_bindHandle, OCI_HTYPE_BIND, &value, sizeof (value), OCI_ATTR_CHARSET_ID, to->m_conn->m_errorHandle);
+		}
+#endif // defined(_UNICODE) || defined(UNICODE)
+
+	}
 	else
-		throw (OraError(result, to->m_conn->m_envHandle, __FILE__, __LINE__));
+		throw (OraError(result, to->m_conn->m_envHandle, __TFILE__, __LINE__));
 
 	if (result != OCI_SUCCESS)
-		throw (OraError(result, to->m_conn->m_errorHandle, __FILE__, __LINE__, m_paramName.c_str ()));
+		throw (OraError(result, to->m_conn->m_errorHandle, __TFILE__, __LINE__, m_paramName.c_str ()));
 	m_stmt = to;
 }
 
 
-Parameter& Parameter::operator = (Pstr text)
+Parameter& Parameter::operator = (EpTString text)
 {
 	// prerequisites
 	assert (m_stmt);
 
-	if (!text)
+	if (text.length()<=0)
 		m_indicator = -1; // set to null
 	else if (m_paramType == DT_TEXT)
 	{
 
+#if defined(_UNICODE) || defined(UNICODE)
+		m_dataLen = static_cast <unsigned short> (text.length() * 2);
+#else// defined(_UNICODE) || defined(UNICODE)
+		m_dataLen = static_cast <unsigned short> (text.length());
+#endif// defined(_UNICODE) || defined(UNICODE)
 		////////////////////////////////////////////////////////////////////////////////////////
-		//주석해제(수정)
-#if defined (UNICODE)
-		m_dataLen = static_cast <unsigned short> (wcslen (text) * 2);
-#else
-		m_dataLen = static_cast <unsigned short> (strlen (text));
-#endif
-		////////////////////////////////////////////////////////////////////////////////////////
-		m_dataLen = static_cast <unsigned short> (_tcslen (text));
 		if (m_dataLen > m_size)
 			m_dataLen = static_cast <unsigned short> ((m_size - 2) & ~1);
-		memcpy (m_fetchBuffer, text, m_dataLen);
+		memcpy (m_fetchBuffer, text.c_str(), m_dataLen);
 
-#if defined (UNICODE)
+#if defined(_UNICODE) || defined(UNICODE)
 		// zero-terminate
-		*((wchar_t *) m_fetchBuffer + m_dataLen / 2) = L'\0';
+		*((wchar_t *) m_fetchBuffer + m_dataLen / 2) = _T('\0');
 		// data len should include terminating zero
 		m_dataLen += sizeof (wchar_t);
-#else
+#else// defined(_UNICODE) || defined(UNICODE)
 		*((char *) m_fetchBuffer + m_dataLen) = '\0';
 		m_dataLen += sizeof (char);
-#endif
+#endif// defined(_UNICODE) || defined(UNICODE)
 		m_indicator = 0; // not null
 	}
 	else
-		throw (OraError(EC_BAD_INPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_INPUT_TYPE, __TFILE__, __LINE__));
 	return (*this);
 }
 
@@ -262,13 +269,13 @@ Parameter& Parameter::operator = (double value)
 
 	if (m_paramType == DT_NUMBER)
 	{
-		sword result = OCINumberFromReal (m_stmt->conn->m_errorHandle, &value, sizeof (double), reinterpret_cast <OCINumber *> (m_fetchBuffer));
+		sword result = OCINumberFromReal (m_stmt->m_conn->m_errorHandle, &value, sizeof (double), reinterpret_cast <OCINumber *> (m_fetchBuffer));
 		if (result != OCI_SUCCESS)
-			throw (OraError(result, m_stmt->conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_stmt->m_conn->m_errorHandle, __TFILE__, __LINE__));
 		m_indicator = 0; // not null
 	}
 	else
-		throw (OraError(EC_BAD_INPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_INPUT_TYPE, __TFILE__, __LINE__));
 	return (*this);
 }
 
@@ -280,13 +287,13 @@ Parameter& Parameter::operator = (long value)
 
 	if (m_paramType == DT_NUMBER)
 	{
-		int result = OCINumberFromInt ( m_stmt->conn->m_errorHandle, &value, sizeof (long), OCI_NUMBER_SIGNED, reinterpret_cast <OCINumber *> (m_fetchBuffer));
+		int result = OCINumberFromInt ( m_stmt->m_conn->m_errorHandle, &value, sizeof (long), OCI_NUMBER_SIGNED, reinterpret_cast <OCINumber *> (m_fetchBuffer));
 		if (result != OCI_SUCCESS)
-			throw (OraError(result, m_stmt->conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_stmt->m_conn->m_errorHandle, __TFILE__, __LINE__));
 		m_indicator = 0; // not null
 	}
 	else
-		throw (OraError(EC_BAD_INPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_INPUT_TYPE, __TFILE__, __LINE__));
 	return (*this);
 }
 
@@ -298,25 +305,24 @@ Parameter& Parameter::operator = (const DateTime& dateTime)
 
 	if (m_paramType == DT_DATE)
 	{
-		d.SetOciDate(*reinterpret_cast <OCIDate*> (m_fetchBuffer));
+		dateTime.SetOciDate(*reinterpret_cast <OCIDate*> (m_fetchBuffer));
 		m_indicator = 0; // not null
 	}
 	else
-		throw (OraError(EC_BAD_INPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_INPUT_TYPE, __TFILE__, __LINE__));
 	return (*this);
 }
 
 
-Pstr Parameter::ToString () const
+EpTString Parameter::ToString () const
 {
 	// prerequisites
 	assert (m_stmt);
 
-	if (m_paramType == DT_TEXT
-		&& m_indicator != -1) // not null?
-		return (reinterpret_cast <Pstr> (m_fetchBuffer));
+	if (m_paramType == DT_TEXT && m_indicator != -1) // not null?
+		return EpTString(reinterpret_cast<TCHAR*>(m_fetchBuffer));
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -332,10 +338,10 @@ double Parameter::ToDouble () const
 		if (result == OCI_SUCCESS)
 			return (value);
 		else
-			throw (OraError(result, m_stmt->m_conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_stmt->m_conn->m_errorHandle, __TFILE__, __LINE__));
 	}
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -351,10 +357,10 @@ long Parameter::ToLong () const
 		if (result == OCI_SUCCESS)
 			return (value);
 		else
-			throw (OraError(result, m_stmt->m_conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_stmt->m_conn->m_errorHandle, __TFILE__, __LINE__));
 	}
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -366,7 +372,7 @@ DateTime Parameter::ToDateTime () const
 	if (m_paramType == DT_DATE && m_indicator != -1) // not null?)
 		return (DateTime (*reinterpret_cast <OCIDate *> (m_fetchBuffer)));
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 
 
@@ -390,6 +396,6 @@ ResultSet& Parameter::ToResultSet ()
 		return (*m_resultSet);
 	}
 	else
-		throw (OraError(EC_BAD_OUTPUT_TYPE, __FILE__, __LINE__));
+		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }
 

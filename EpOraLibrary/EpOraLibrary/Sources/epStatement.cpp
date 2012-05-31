@@ -8,13 +8,13 @@
 using namespace epol;
 
 
-Statement::Statement (Connection &useConnection, const char *sqlStmt, int sqlStmtLen)	// = -1
+Statement::Statement (Connection &useConnection, const TCHAR *sqlStmt)	
 {
 	m_conn = &useConnection;
 	initialize ();
 	try
 	{
-		prepare (sqlStmt, sqlStmtLen);
+		prepare (sqlStmt);
 	}
 	catch (...)
 	{
@@ -55,7 +55,7 @@ void Statement::cleanUp ()
 }
 
 
-void Statement::prepare (const char *sqlStmt, int sqlLen)
+void Statement::prepare (const TCHAR *sqlStmt)
 {
 	// prerequisites
 	assert (m_conn != NULL && sqlStmt != NULL);
@@ -68,13 +68,12 @@ void Statement::prepare (const char *sqlStmt, int sqlLen)
 
 	if (result == OCI_SUCCESS)
 	{
-		if (sqlLen == -1) 
-			sqlLen = strlen (sqlStmt);
+		unsigned int sqlLen = System::TcsLen(sqlStmt);
 
-		result = OCIStmtPrepare (m_stmtHandle,m_conn->m_errorHandle,(text *) sqlStmt, sqlLen, OCI_NTV_SYNTAX, OCI_DEFAULT);
+		result = OCIStmtPrepare (m_stmtHandle,m_conn->m_errorHandle,(text *) sqlStmt, sqlLen*sizeof(TCHAR), OCI_NTV_SYNTAX, OCI_DEFAULT);
 	}
 	else
-		throw (OraError(result, m_conn->m_envHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_conn->m_envHandle, __TFILE__, __LINE__));
 
 	if (result == OCI_SUCCESS)
 	{
@@ -90,7 +89,7 @@ void Statement::prepare (const char *sqlStmt, int sqlLen)
 		m_isExecuted = false;
 	}
 	else
-		throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 }
 
 
@@ -109,11 +108,11 @@ void Statement::executePrepared ()
 	if (result == OCI_SUCCESS)
 		m_isExecuted = true;
 	else
-		throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 }
 
 
-Parameter& Statement::Bind (const char *name, DataTypesEnum dateType)
+Parameter& Statement::Bind (const TCHAR *name, DataTypesEnum dateType)
 {
 	// prerequisites
 	assert (name);
@@ -155,12 +154,12 @@ ResultSet* Statement::Select ()
 }
 
 
-Parameter& Statement::operator [] (const char *paramName)
+Parameter& Statement::operator [] (const TCHAR *paramName)
 {
-	ParametersMap::iterator i = m_parametersMap.find (std::string (paramName));
+	ParametersMap::iterator i = m_parametersMap.find (EpTString(paramName));
 	if (i == m_parametersMap.end ())
 		// name not found in parameters
-		throw (OraError(EC_PARAMETER_NOT_FOUND, __FILE__, __LINE__, paramName));
+		throw (OraError(EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, paramName));
 	return (*(i->second));
 }
 
@@ -169,7 +168,7 @@ Parameter& Statement::operator [] (unsigned short paramIndex)
 {
 	if (paramIndex < FIRST_PARAMETER_NO || paramIndex > m_parameters.size ())
 		// no parameter with such index
-		throw (OraError(EC_PARAMETER_NOT_FOUND, __FILE__, __LINE__, "%d", (int) paramIndex));
+		throw (OraError(EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, _T("%d"), (int) paramIndex));
 	return (*(m_parameters.at (paramIndex - FIRST_PARAMETER_NO)));
 }
 

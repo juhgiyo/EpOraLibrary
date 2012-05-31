@@ -89,7 +89,7 @@ unsigned int ResultSet::columnsCount ()
 	if (result == OCI_SUCCESS)
 		return (count);
 	else
-		throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 }
 
 
@@ -106,7 +106,7 @@ unsigned int ResultSet::rowsCount ()
 		return (count);
 	}
 	else
-		throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 }
 
 
@@ -121,7 +121,7 @@ void ResultSet::describe ()
 	{
 		// get next column info
 		OCIParam	*paramHandle = NULL;
-		text		*paramName = NULL;
+		TCHAR		*paramName = NULL;
 		unsigned int nameLen = 0;
 		unsigned short ociType = 0;
 		unsigned int size = 0;
@@ -152,12 +152,12 @@ void ResultSet::describe ()
 
 		// error situation?
 		if (result != OCI_SUCCESS)
-			throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__));
+			throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 
 		// setup new column, alloc memory for fetch buffer, indicators and data lens;
 		// column.constructor could possibly throw an out-of-memory exception
 		// in this case resultset will be partially initialized
-		Column	*col = new Column (this, reinterpret_cast <const char *> (paramName), nameLen, ociType, size, m_fetchCount);
+		Column	*col = new Column (this, reinterpret_cast <const TCHAR *> (paramName), ociType, size, m_fetchCount);
 
 		// add to array AND to map
 		// (makes possible to address m_columns by name AND index)
@@ -183,18 +183,17 @@ void ResultSet::define()
 	{
 		result = OCIDefineByPos (m_rsHandle, &((*i)->m_defineHandle), m_conn->m_errorHandle, position++, (*i)->m_fetchBuffer, (*i)->m_size,	(*i)->m_ociType, (*i)->m_indicators, (*i)->m_dataLengths, NULL, OCI_DEFAULT);
 
-#if defined (UNICODE)
-		// request text m_columns as unicode (2.0)
+#if defined(_UNICODE) || defined(UNICODE)
 		if (result == OCI_SUCCESS && (*i)->m_colType == DT_TEXT)
 		{
 
-			unsigned int value = OCI_UCS2ID;
+			unsigned int value = OCI_UTF16ID;
 			result = OCIAttrSet ( (*i)->m_defineHandle, OCI_HTYPE_DEFINE, &value, sizeof (value), OCI_ATTR_CHARSET_ID, m_conn->m_errorHandle);
 		}
-#endif // UNICODE defined?
+#endif //defined(_UNICODE) || defined(UNICODE)
 
 		if (result != OCI_SUCCESS)
-			throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__, (*i)->m_colName.c_str ()));
+			throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__, (*i)->m_colName.c_str ()));
 	}
 	m_isDefined = true;
 }
@@ -225,7 +224,7 @@ void ResultSet::fetchRows ()
 			m_isEod = true;
 	}
 	else
-		throw (OraError(result, m_conn->m_errorHandle, __FILE__, __LINE__));
+		throw (OraError(result, m_conn->m_errorHandle, __TFILE__, __LINE__));
 }
 
 
@@ -249,12 +248,12 @@ bool ResultSet::Next ()
 }
 
 
-Column& ResultSet::operator [] (const char *columnName)
+Column& ResultSet::operator [] (const TCHAR *columnName)
 {
 	ColumnsMap::iterator i = m_columnsMap.find (columnName);
 	if (i == m_columnsMap.end ())
 		// column with such name is not found
-		throw (OraError(EC_COLUMN_NOT_FOUND, __FILE__, __LINE__, columnName));
+		throw (OraError(EC_COLUMN_NOT_FOUND, __TFILE__, __LINE__, columnName));
 	return (*(i->second));
 }
 
@@ -263,7 +262,7 @@ Column& ResultSet::operator [] (unsigned short columnIndex)
 {
 	if (columnIndex < FIRST_COLUMN_NO || columnIndex > m_columns.size ())
 		// no column with such index
-		throw (OraError(EC_COLUMN_NOT_FOUND, __FILE__, __LINE__, "%d", (int) columnIndex));
+		throw (OraError(EC_COLUMN_NOT_FOUND, __TFILE__, __LINE__, _T("%d"), (int) columnIndex));
 	return (*(m_columns.at (columnIndex - FIRST_COLUMN_NO)));
 }
 

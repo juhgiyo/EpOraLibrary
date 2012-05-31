@@ -1,7 +1,44 @@
+/*! 
+@file epStatement.h
+@author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
+		<http://github.com/juhgiyo/eporalibrary>
+@date May 30, 2012
+@brief OracleDB SQL Statement Interface
+@version 1.0
+
+@section LICENSE
+
+Copyright (C) 2012  Woong Gyu La <juhgiyo@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+@section DESCRIPTION
+
+An Interface for OracleDB SQL Statement.
+
+@section NOTICE
+
+EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 606u <606u@dir.bg> 
+<http://606u.dir.bg/>
+606u had kindly approved using his/her oraLib freely for EpOraLibrary development.
+
+*/
 #ifndef	__EP_STATEMENT_H__
 #define	__EP_STATEMENT_H__
 
 #include "epOraLib.h"
+#include "epOraDefines.h"
 #include <vector>
 #include <map>
 #include "oci.h"
@@ -11,21 +48,6 @@ namespace epol {
 	
 	class ResultSet;
 	class Connection;
-	// statement type - select statements and pl/sql blocks are handled with care
-	typedef enum _statementTypesEnum
-	{
-		ST_UNKNOWN,
-		ST_SELECT = OCI_STMT_SELECT,
-		ST_UPDATE = OCI_STMT_UPDATE,
-		ST_DELETE = OCI_STMT_DELETE,
-		ST_INSERT = OCI_STMT_INSERT,
-		ST_CREATE = OCI_STMT_CREATE,
-		ST_DROP = OCI_STMT_DROP,
-		ST_ALTER = OCI_STMT_ALTER,
-		ST_BEGIN = OCI_STMT_BEGIN,
-		ST_DECLARE = OCI_STMT_DECLARE
-	}StatementTypesEnum;
-
 
 	class Statement
 	{
@@ -34,9 +56,6 @@ namespace epol {
 		friend class Connection;
 
 	public:
-		// binds a named variable to the statement
-		// when type is set to DT_UNKNOWN type is taken from name's prefix
-		Parameter &Bind (const TCHAR *name, DataTypesEnum dateType = DT_UNKNOWN);
 
 		// executes a prepared statement with no output parameters
 		inline void Execute () 
@@ -52,11 +71,6 @@ namespace epol {
 		{
 			delete this; 
 		}
-
-		// returns a bound parameter by name or index
-		Parameter& operator [] (const TCHAR *paramName);
-		Parameter& operator [] (unsigned short paramIndex);
-
 
 	private:
 		// public not creatable; use connection.execute, .prepare or .select
@@ -93,11 +107,6 @@ namespace epol {
 		std::string		m_sqlStmt;			// being executed
 		StatementTypesEnum	m_stmtType;		// of the statement
 
-		typedef std::vector <Parameter *> Parameters;
-		typedef std::map <EpTString, Parameter *> ParametersMap;
-		Parameters		m_parameters;		// an array with bound parameters
-		ParametersMap	m_parametersMap;	// a map with parameters against their names
-
 		bool			m_isPrepared;
 		bool			m_isExecuted;
 
@@ -105,7 +114,7 @@ namespace epol {
 	};
 
 
-};
+}
 
 
 #endif	// __EP_STATEMENT_H__

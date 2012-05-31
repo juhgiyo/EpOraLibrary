@@ -1,27 +1,48 @@
+/*! 
+@file epDateTime.h
+@author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
+		<http://github.com/juhgiyo/eporalibrary>
+@date May 30, 2012
+@brief OracleDB DateTime Interface
+@version 1.0
+
+@section LICENSE
+
+Copyright (C) 2012  Woong Gyu La <juhgiyo@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+@section DESCRIPTION
+
+An Interface for OracleDB DateTime.
+
+@section NOTICE
+
+EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 606u <606u@dir.bg> 
+<http://606u.dir.bg/>
+606u had kindly approved using his/her oraLib freely for EpOraLibrary development.
+*/
 #ifndef __EP_DATETIME_H__
 #define __EP_DATETIME_H__
 
 #include "epOraLib.h"
+#include "epOraDefines.h"
 #include <oci.h>
 
 namespace epol {
 
 
-	enum MonthsEnum
-	{
-		JAN = 1,
-		FEB,
-		MAR,
-		APR,
-		MAY,
-		JUN,
-		JUL,
-		AUG,
-		SEP,
-		OCT,
-		NOV,
-		DEC
-	};
 
 
 	class EP_ORACLELIB DateTime
@@ -138,6 +159,6 @@ namespace epol {
 	};
 
 
-}; 
+}
 
 #endif //__EP_DATETIME_H__

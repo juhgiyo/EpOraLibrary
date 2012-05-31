@@ -1,42 +1,48 @@
+/*! 
+@file epOraError.h
+@author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
+		<http://github.com/juhgiyo/eporalibrary>
+@date May 30, 2012
+@brief OracleDB Error Interface
+@version 1.0
+
+@section LICENSE
+
+Copyright (C) 2012  Woong Gyu La <juhgiyo@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+@section DESCRIPTION
+
+An Interface for OracleDB Error.
+
+@section NOTICE
+
+EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 606u <606u@dir.bg> 
+<http://606u.dir.bg/>
+606u had kindly approved using his/her oraLib freely for EpOraLibrary development.
+*/
 #ifndef	__EP_ORAERROR_H__
 #define	__EP_ORAERROR_H__
 #include "epOraLib.h"
+#include "epOraDefines.h"
 #include "oci.h"
 #include <string>
 
 using namespace epl;
+
 namespace epol {
-
-
-	// error codes thrown from the library
-	typedef enum _errorCodesEnum
-	{
-		EC_OCI_ERROR = -1,
-		EC_ENV_CREATE_FAILED = 1000,
-		EC_TIMEOUT,
-		EC_NO_MEMORY,
-		EC_BAD_PARAM_TYPE,
-		EC_POOL_NOT_SETUP,
-		EC_BAD_INPUT_TYPE,
-		EC_BAD_OUTPUT_TYPE,
-		EC_BAD_TRANSFORM,
-		EC_BAD_PARAM_PREFIX,
-		EC_UNSUP_ORA_TYPE,
-		EC_PARAMETER_NOT_FOUND,
-		EC_COLUMN_NOT_FOUND,
-		EC_INTERNAL
-	}ErrorCodesEnum;
-
-
-	// error types
-	typedef enum _errorTypesEnum
-	{
-		ET_UNKNOWN = 0,
-		ET_ORACLE,
-		ET_ORALIB,
-		ET_WINAPI
-	}ErrorTypesEnum;
-
 
 	class OraError
 	{
@@ -93,7 +99,7 @@ namespace epol {
 	};
 
 
-};
+}
 
 
 #endif	// __EP_ORAERROR_H__

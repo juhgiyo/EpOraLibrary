@@ -4,7 +4,7 @@
 		<http://github.com/juhgiyo/eporalibrary>
 @date May 24, 2012
 @brief EP Oracle Library Interface
-@version 2.0
+@version 1.0
 
 @section LICENSE
 
@@ -27,6 +27,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 An Interface for EP Oracle Library.
 
+@section NOTICE
+
+EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 606u <606u@dir.bg> 
+<http://606u.dir.bg/>
+606u had kindly approved using his/her oraLib freely for EpOraLibrary development.
 */
 
 #ifndef __EP_ORACLE_LIB_H__
@@ -48,40 +53,6 @@ An Interface for EP Oracle Library.
 
 #endif  //EP_ORACLELIB_DLL_IMPORT
 #endif  //EP_ORACLELIB_DLL_EXPORT
-
-
-// internal data types are 4 only: number, date, text and result set
-enum DataTypesEnum
-{
-	DT_UNKNOWN,
-	DT_NUMBER,
-	DT_DATE,
-	DT_TEXT,
-	DT_RESULT_SET
-};
-
-// parameter prefixes (for example: :n1 is a number, :sName is a text)
-enum ParameterPrefixesEnum
-{
-	PP_ARRAY = 't',
-	PP_NUMERIC = 'n',
-	PP_DATE = 'd',
-	PP_TEXT = 's',
-	PP_RESULT_SET = 'c'
-};
-
-// maximal length (in characters) of a text input and/or output parameter
-#define MAX_OUTPUT_TEXT_BYTES 4096
-// number of rows to request on each fetch
-#define FETCH_SIZE 200000
-
-#define ERROR_FORMAT_MAX_MSG_LEN 1024
-
-// index of the first column in a result set (one of 0, 1)
-#define FIRST_COLUMN_NO 1
-
-// index of the first parameter in a statement (one of 0, 1)
-#define FIRST_PARAMETER_NO 1
 
 #include "epl.h"
 

@@ -1,4 +1,20 @@
+/*! 
+OracleDB SQL Statement for the EpOraLibrary
+Copyright (C) 2012  Woong Gyu La <juhgiyo@gmail.com>
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "epStatement.h"
 #include "epResultSet.h"
 #include "epParameter.h"
@@ -47,11 +63,6 @@ void Statement::cleanUp ()
 		OCIHandleFree (m_stmtHandle, OCI_HTYPE_STMT);
 		m_stmtHandle = NULL;
 	}
-
-	// remove bound parameters
-	for (Parameters::iterator i=m_parameters.begin (); i!=m_parameters.end (); ++i)
-		delete (*i);
-	m_parameters.clear ();
 }
 
 
@@ -112,27 +123,6 @@ void Statement::executePrepared ()
 }
 
 
-Parameter& Statement::Bind (const TCHAR *name, DataTypesEnum dateType)
-{
-	// prerequisites
-	assert (name);
-
-	// could throw an exception
-	Parameter *param = new Parameter (this, name, dateType, FETCH_SIZE);
-	try
-	{
-		m_parameters.push_back (param);
-		m_parametersMap [param->m_paramName] = param;
-	}
-	catch (...) // STL exception, perhaps
-	{
-		delete param;
-		throw;
-	}
-	return (*param);
-}
-
-
 ResultSet* Statement::Select ()
 {
 	// prerequisites
@@ -153,24 +143,6 @@ ResultSet* Statement::Select ()
 	}
 }
 
-
-Parameter& Statement::operator [] (const TCHAR *paramName)
-{
-	ParametersMap::iterator i = m_parametersMap.find (EpTString(paramName));
-	if (i == m_parametersMap.end ())
-		// name not found in parameters
-		throw (OraError(EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, paramName));
-	return (*(i->second));
-}
-
-
-Parameter& Statement::operator [] (unsigned short paramIndex)
-{
-	if (paramIndex < FIRST_PARAMETER_NO || paramIndex > m_parameters.size ())
-		// no parameter with such index
-		throw (OraError(EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, _T("%d"), (int) paramIndex));
-	return (*(m_parameters.at (paramIndex - FIRST_PARAMETER_NO)));
-}
 
 
 

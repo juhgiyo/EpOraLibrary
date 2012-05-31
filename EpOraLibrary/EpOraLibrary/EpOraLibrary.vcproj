@@ -43,7 +43,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories=".\Headers;.\OciHeaders;.\EpLibraryHeaders"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;EP_FOUNDATION_USING_PROFILE;EP_FOUNDATION_USING_LOG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;"
 				StringPooling="false"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -178,7 +178,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories=".\Headers;.\OciHeaders;.\EpLibraryHeaders"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;EP_FOUNDATION_DLL_IMPORT;EP_FOUNDATION_USING_PROFILE;EP_FOUNDATION_USING_LOG;EP_ORACLELIB_DLL_EXPORT"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;EP_FOUNDATION_DLL_IMPORT;EP_ORACLELIB_DLL_EXPORT"
 				StringPooling="false"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -253,7 +253,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories=".\Headers;.\OciHeaders;.\EpLibraryHeaders"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;EP_FOUNDATION_DLL_IMPORT;EP_FOUNDATION_USING_PROFILE;EP_FOUNDATION_USING_LOG;EP_ORACLELIB_DLL_EXPORT"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;EP_FOUNDATION_DLL_IMPORT;EP_ORACLELIB_DLL_EXPORT"
 				StringPooling="false"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -327,7 +327,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories=".\Headers;.\OciHeaders;.\EpLibraryHeaders"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;EP_FOUNDATION_USING_PROFILE;EP_FOUNDATION_USING_LOG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;"
 				StringPooling="false"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -637,6 +637,10 @@
 			</File>
 			<File
 				RelativePath=".\Headers\epol.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Headers\epOraDefines.h"
 				>
 			</File>
 			<File

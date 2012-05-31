@@ -1,3 +1,38 @@
+/*! 
+@file epParameter.h
+@author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
+		<http://github.com/juhgiyo/eporalibrary>
+@date May 30, 2012
+@brief OracleDB Parameter Interface
+@version 1.0
+
+@section LICENSE
+
+Copyright (C) 2012  Woong Gyu La <juhgiyo@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+@section DESCRIPTION
+
+An Interface for OracleDB Parameter.
+
+@section NOTICE
+
+EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 606u <606u@dir.bg> 
+<http://606u.dir.bg/>
+606u had kindly approved using his/her oraLib freely for EpOraLibrary development.
+*/
 #ifndef	__EP_PARAMETER_H__
 #define	__EP_PARAMETER_H__
 
@@ -18,23 +53,6 @@ namespace epol {
 		friend class Statement;
 
 	public:
-		// sets parameter value to null
-		inline void ToNull () 
-		{ 
-			m_indicator = -1; 
-		}
-
-		// sets parameter value to some text
-		Parameter& operator = (EpTString text);
-
-		// sets parameter value to some double
-		Parameter& operator = (double value);
-
-		// sets parameter value to some long
-		Parameter& operator = (long value);
-
-		// sets parameter value to some date/time
-		Parameter& operator = (const DateTime& dateTime);
 
 		// returns whether parameter value is null
 		inline bool IsNull () const 
@@ -42,39 +60,17 @@ namespace epol {
 			return (m_indicator == -1); 
 		};
 
-		// returns parameter value as a text
-		inline operator EpTString () const 
-		{
-			return (ToString ()); 
-		};
 		EpTString ToString () const;
 
-		// returns parameter value as a double
-		inline operator double () const 
-		{ 
-			return (ToDouble ()); 
-		};
 		double ToDouble () const;
 
 		// returns parameter value as a long
-		inline operator long () const 
-		{ 
-			return (ToLong ()); 
-		};
 		long ToLong () const;
 
 		// returns parameter value as a date/time helper object
-		inline operator DateTime () const 
-		{ 
-			return (ToDateTime ()); 
-		};
 		DateTime ToDateTime () const;
 
 		// returns a resultset for a cursor bound variable
-		inline operator ResultSet& () 
-		{
-			return (ToResultSet ()); 
-		};
 		ResultSet& ToResultSet ();
 
 	private:
@@ -116,6 +112,25 @@ namespace epol {
 		void bindResultSet (Statement *to,unsigned int fetchSize = FETCH_SIZE);
 
 
+		// sets parameter value to null
+		inline void toNull () 
+		{ 
+			m_indicator = -1; 
+		}
+
+		// sets parameter value to some text
+		Parameter& operator = (EpTString text);
+
+		// sets parameter value to some double
+		Parameter& operator = (double value);
+
+		// sets parameter value to some long
+		Parameter& operator = (long value);
+
+		// sets parameter value to some date/time
+		Parameter& operator = (const DateTime& dateTime);
+
+
 		EpTString		m_paramName;		// in the exact case, including leading ':'
 		DataTypesEnum	m_paramType;		// as it will be returned
 		unsigned short				m_ociType;		// oracle's data type
@@ -137,7 +152,7 @@ namespace epol {
 	}; // parameter class
 
 
-};
+}
 
 
 #endif	// __EP_PARAMETER_H__

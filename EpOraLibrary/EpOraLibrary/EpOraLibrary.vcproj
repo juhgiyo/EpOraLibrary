@@ -63,7 +63,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="oci.lib EpFoundation.lib"
+				AdditionalDependencies="oci.lib EpFoundation_D.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
 				AdditionalLibraryDirectories=".\Libs\Debug"
 			/>
 			<Tool
@@ -198,8 +199,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="oci.lib EpFoundation_DLL.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_DLL.dll"
+				AdditionalDependencies="oci.lib EpFoundation_DLL_D.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_DLL_D.dll"
 				AdditionalLibraryDirectories=".\Libs\Debug DLL"
 				TargetMachine="1"
 			/>
@@ -273,8 +274,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="oci.lib EpFoundationU_DLL.lib"
-				OutputFile="$(OutDir)\$(ProjectName)U_DLL.dll"
+				AdditionalDependencies="oci.lib EpFoundationU_DLL_D.lib"
+				OutputFile="$(OutDir)\$(ProjectName)U_DLL_D.dll"
 				AdditionalLibraryDirectories=".\Libs\Debug DLL Unicode"
 			/>
 			<Tool
@@ -347,8 +348,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="oci.lib EpFoundationU.lib"
-				OutputFile="$(OutDir)\$(ProjectName)U.lib"
+				AdditionalDependencies="oci.lib EpFoundationU_D.lib"
+				OutputFile="$(OutDir)\$(ProjectName)U_D.lib"
 				AdditionalLibraryDirectories=".\Libs\Debug Unicode"
 			/>
 			<Tool

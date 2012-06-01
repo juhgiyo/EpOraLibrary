@@ -26,12 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 @section DESCRIPTION
 
 An Interface for OracleDB DateTime.
-
-@section NOTICE
-
-EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 606u <606u@dir.bg> 
-<http://606u.dir.bg/>
-606u had kindly approved using his/her oraLib freely for EpOraLibrary development.
 */
 #ifndef __EP_DATETIME_H__
 #define __EP_DATETIME_H__

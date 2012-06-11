@@ -803,6 +803,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epAssert.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epBaseClient.h"
 				>
 			</File>

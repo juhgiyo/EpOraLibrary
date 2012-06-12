@@ -927,6 +927,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epLocale.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epMemory.h"
 				>
 			</File>

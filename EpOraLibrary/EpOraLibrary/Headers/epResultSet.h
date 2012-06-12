@@ -94,7 +94,7 @@ namespace epol {
 		/*!
 		Release the self object
 		*/
-		inline void Release () 
+		inline void Delete () 
 		{
 			EP_DELETE this; 
 		}

@@ -46,11 +46,14 @@ namespace epl
 	public:
 		/*!
 		Execute the given command to the console and return the result
+
+		** waitStruct is ignored when isWaitForTerminate is false.
 		@param[in] command the command to execute
 		@param[in] isWaitForTerminate flag for waiting for process to terminate or not
+		@param[in] priority the priority of the process executing
 		@return the result of the console command
 		*/
-		static EpTString ExecuteConsoleCommand(const TCHAR * command,bool isWaitForTerminate=true);
+		static EpTString ExecuteConsoleCommand(const TCHAR * command, bool isWaitForTerminate=true, ConsolePriority priority=CONSOLE_PRIORITY_NORMAL);
 
 		/*!
 		Execute the given executable file

@@ -815,6 +815,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epBaseClientSimple.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epBaseFile.h"
 				>
 			</File>
@@ -839,15 +843,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServerEx.h"
-				>
-			</File>
-			<File
 				RelativePath=".\EpLibraryHeaders\epBaseServerWorker.h"
 				>
 			</File>
 			<File
 				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerEx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerSimple.h"
 				>
 			</File>
 			<File
@@ -1016,6 +1020,10 @@
 			</File>
 			<File
 				RelativePath=".\EpLibraryHeaders\epTaskbarNotifier.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EpLibraryHeaders\epTextFile.h"
 				>
 			</File>
 			<File

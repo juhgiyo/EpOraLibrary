@@ -33,35 +33,14 @@ An Interface for Base Server Worker Extension.
 #define __EP_BASE_SERVER_WORKER_EX_H__
 
 #include "epFoundationLib.h"
-#include "epSystem.h"
-#include "epMemory.h"
-#include "epThread.h"
-#include "epSmartObject.h"
-#include "epPacket.h"
-#include "epCriticalSectionEx.h"
-#include "epMutex.h"
-#include "epNoLock.h"
-
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif //WIN32_LEAN_AND_MEAN
-
-#include <windows.h>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-
-
-// Need to link with Ws2_32.lib
-#pragma comment (lib, "Ws2_32.lib")
-
+#include "epBaseServerWorker.h"
 namespace epl
 {
 	/*! 
 	@class BaseServerWorkerEx epBaseServerWorkerEx.h
 	@brief A class for Base Server Worker Extension.
 	*/
-	class EP_FOUNDATION BaseServerWorkerEx:public Thread, public SmartObject
+	class EP_FOUNDATION BaseServerWorkerEx:public BaseServerWorker
 	{
 	public:
 		/*!
@@ -96,22 +75,12 @@ namespace epl
 		{
 			if(this!=&b)
 			{
-				LockObj lock(m_sendLock);
-				m_clientSocket=b.m_clientSocket;
-				Thread::operator =(b);
-				SmartObject::operator =(b);
+				BaseServerWorker::operator =(b);
 			}
 			return *this;
 		}
 
-		/*!
-		Send the packet to the client
-		@param[in] packet the packet to be sent
-		@return sent byte size
-		*/
-		int Send(const Packet &packet);
-
-
+	
 	protected:
 		/*!
 		Parse the given packet and do relevant operation.
@@ -121,15 +90,11 @@ namespace epl
 		virtual void parsePacket(const Packet &packet)=0;
 
 	private:
-
-	
 		/*!
-		Receive the packet from the client
-		@param[out] packet the packet received
-		@return received byte size
+		thread loop function
 		*/
-		int receive(Packet &packet);
-
+		virtual void execute();
+	
 		/*!
 		Handle the packet parsing thread.
 		@param[in] param the packet Pass Unit
@@ -148,25 +113,7 @@ namespace epl
 			Packet *m_packet;
 		};
 
-		/*!
-		Set the argument for the base server worker thread.
-		@param[in] a The client socket from server.
-		*/
-		virtual void SetArg(void* a);
 
-		/*!
-		thread loop function
-		*/
-		virtual void execute();
-
-		/// client socket
-		SOCKET m_clientSocket;
-
-		/// send lock
-		BaseLock *m_sendLock;
-
-		/// Lock Policy
-		LockPolicy m_lockPolicy;
 	};
 
 }

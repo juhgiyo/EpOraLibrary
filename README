@@ -16,7 +16,7 @@ FEATURES
 
 * Supports the most of operations that Oracle OCCI Library supports.
 * No more linking problems, stated above.
-* Supports full Unicode development environment.
+* Supports full ASCII/Unicode development environment.
 * Similar operation convention used as Oracle OCCI Library
   - People can be easily adapted to EpOralibrary.
 * Easy installation 
@@ -36,7 +36,7 @@ Installation
 
 DOCUMENTATION
 
-For detailed documentation, please download the full document (EPOraLibrary Documentation.chm).
+For detailed documentation, please download the full document (EPLibrary Documentation.chm) at <https://github.com/downloads/juhgiyo/EpOraLibrary/EpOraLibrary%20Documentation.chm>.
 
 If the documentation file is not visible after finishing download,
 * Solution 1.
@@ -48,6 +48,10 @@ If the documentation file is not visible after finishing download,
   2. Click Unblock.
   3. Double-click the .chm file to open the file.
 
+
+USAGE
+
+To find the usage examples, please see the wiki page at <https://github.com/juhgiyo/EpOraLibrary/wiki/EpOraLibrary-Usage-Guide>
 
 SPECIAL THANKS TO
 

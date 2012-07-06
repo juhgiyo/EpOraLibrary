@@ -241,7 +241,7 @@ ResultSet* Connection::Select (const TCHAR *selectStmt)
 	}
 	catch (...)
 	{
-		statement->Delete ();
+		statement->Release ();
 		throw;
 	}
 }

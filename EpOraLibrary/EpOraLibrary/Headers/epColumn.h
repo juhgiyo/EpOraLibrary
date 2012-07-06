@@ -77,6 +77,15 @@ namespace epol
 		*/
 		DateTime ToDateTime() const;
 
+		/*!
+		Release the self object
+		@remark Column is not deleted by the client, but when ResultSet is released instead
+		*/
+		inline void Release ()
+		{
+			
+		}
+
 	private:
 
 		/*!

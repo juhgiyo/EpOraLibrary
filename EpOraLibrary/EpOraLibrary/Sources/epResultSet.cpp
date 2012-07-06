@@ -67,7 +67,7 @@ void ResultSet::cleanUp ()
 		m_rsHandle = NULL;
 
 	if (m_stmt) 
-		m_stmt->Delete ();
+		m_stmt->Release ();
 	m_stmt = NULL;
 }
 

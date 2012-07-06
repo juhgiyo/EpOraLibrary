@@ -154,7 +154,15 @@ namespace epol {
 		{
 			return m_ociType;
 		}
-
+		
+		/*!
+		Release the self object
+		@remark Parameter is freed, when it's Statement is released
+		*/
+		inline void Release ()
+		{
+			
+		}
 	private:
 		/*!
 		Default Constructor

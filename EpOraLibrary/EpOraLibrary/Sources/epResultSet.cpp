@@ -135,7 +135,7 @@ void ResultSet::describe ()
 		TCHAR		*paramName = NULL;
 		unsigned int nameLen = 0;
 		unsigned short ociType = 0;
-		unsigned int size = 0;
+		unsigned short size = 0;
 
 		result = OCIParamGet ( m_rsHandle, OCI_HTYPE_STMT, m_conn->m_errorHandle, reinterpret_cast <void **> (&paramHandle),i + 1);
 

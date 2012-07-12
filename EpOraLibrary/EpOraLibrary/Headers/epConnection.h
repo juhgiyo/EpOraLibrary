@@ -70,7 +70,7 @@ namespace epol
 		@param[in] envMode the Oracle Environment Mode
 		@param[in] nonBlockingMode the flag for whether OracleDB Operation is blocking or not
 		*/
-		Connection (const TCHAR *serviceName, const TCHAR *loginID,const TCHAR *password, unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
+		Connection (const TCHAR *serviceName, const TCHAR *loginID,const TCHAR *password, unsigned long envMode = OCI_THREADED|OCI_OBJECT, bool nonBlockingMode = false);
 
 		~Connection ();
 
@@ -82,7 +82,7 @@ namespace epol
 		@param[in] envMode the Oracle Environment Mode
 		@param[in] nonBlockingMode the flag for whether OracleDB Operation is blocking or not
 		*/
-		void Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode = OCI_OBJECT, bool nonBlockingMode = false);
+		void Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode = OCI_THREADED|OCI_OBJECT, bool nonBlockingMode = false);
 
 		/*!
 		Close the connection

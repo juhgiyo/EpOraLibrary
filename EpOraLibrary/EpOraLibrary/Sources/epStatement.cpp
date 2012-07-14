@@ -136,7 +136,7 @@ ResultSet* Statement::Select ()
 	catch (...)
 	{
 		if (resultSet) 
-			EP_DELETE resultSet;
+			resultSet->ReleaseObj();
 		throw;
 	}
 }
@@ -156,7 +156,7 @@ Parameter& Statement::Bind (const TCHAR *name,DataTypesEnum type)
 	}
 	catch (...) // STL exception, perhaps
 	{
-		EP_DELETE param;
+		param->ReleaseObj();
 		throw;
 	}
 	return (*param);

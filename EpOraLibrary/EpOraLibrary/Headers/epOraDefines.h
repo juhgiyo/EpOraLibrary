@@ -129,7 +129,7 @@ namespace epol
 	#define FIRST_COLUMN_NO 0
 
 	/*!
-	@def ERROR_FORMAT_MAX_MSG_LEN
+	@def FIRST_PARAMETER_NO
 	@brief The index of the first parameter in a statement
 
 	Macro for the index of the first parameter in a statement (one of 0, 1)

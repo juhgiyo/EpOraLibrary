@@ -121,12 +121,12 @@ namespace epol
 	#define ERROR_FORMAT_MAX_MSG_LEN 1024
 
 	/*!
-	@def ERROR_FORMAT_MAX_MSG_LEN
+	@def FIRST_COLUMN_NO
 	@brief The index of the first column in a result set
 
 	Macro for the index of the first column in a result set (one of 0, 1)
 	*/
-	#define FIRST_COLUMN_NO 1
+	#define FIRST_COLUMN_NO 0
 
 	/*!
 	@def ERROR_FORMAT_MAX_MSG_LEN
@@ -134,7 +134,7 @@ namespace epol
 
 	Macro for the index of the first parameter in a statement (one of 0, 1)
 	*/
-	#define FIRST_PARAMETER_NO 1
+	#define FIRST_PARAMETER_NO 0
 
 	/// Enumberator for error codes thrown from EpOraLibrary
 	typedef enum _errorCodesEnum

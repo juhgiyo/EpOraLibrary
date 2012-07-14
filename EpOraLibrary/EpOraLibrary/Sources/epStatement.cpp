@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using namespace epol;
 
 
-Statement::Statement (Connection &useConnection, const TCHAR *sqlStmt)	
+Statement::Statement (Connection &useConnection, const TCHAR *sqlStmt):SmartObject()
 {
 	m_conn = &useConnection;
 	initialize ();
@@ -62,7 +62,7 @@ void Statement::cleanUp ()
 		m_stmtHandle = NULL;
 	}
 	for (Parameters::iterator i=m_parameters.begin (); i!=m_parameters.end (); ++i)
-		EP_DELETE (*i);
+		(*i)->ReleaseObj();
 	m_parameters.clear ();
 	m_parametersMap.clear();	
 }
@@ -80,7 +80,7 @@ void Statement::prepare (const TCHAR *sqlStmt)
 
 	if (result == OCI_SUCCESS)
 	{
-		unsigned int sqlLen = System::TcsLen(sqlStmt);
+		unsigned int sqlLen = epl::System::TcsLen(sqlStmt);
 
 		result = OCIStmtPrepare (m_stmtHandle,m_conn->m_errorHandle,(text *) sqlStmt, sqlLen*sizeof(TCHAR), OCI_NTV_SYNTAX, OCI_DEFAULT);
 	}
@@ -165,7 +165,7 @@ Parameter& Statement::Bind (const TCHAR *name,DataTypesEnum type)
 
 Parameter& Statement::operator [] (const TCHAR *paramName)
 {
-	ParametersMap::iterator i = m_parametersMap.find (EpTString(paramName));
+	ParametersMap::iterator i = m_parametersMap.find (epl::EpTString(paramName));
 	if (i == m_parametersMap.end ())
 		throw (OraError (EC_PARAMETER_NOT_FOUND, __TFILE__, __LINE__, paramName));
 	return (*(i->second));

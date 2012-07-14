@@ -90,7 +90,7 @@ void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR
 
 	// create a server context
 	if (result == OCI_SUCCESS)
-		result = OCIServerAttach (m_serverHandle, m_errorHandle, (text *) serviceName, System::TcsLen(serviceName)*sizeof(TCHAR), OCI_DEFAULT);
+		result = OCIServerAttach (m_serverHandle, m_errorHandle, (text *) serviceName, epl::System::TcsLen(serviceName)*sizeof(TCHAR), OCI_DEFAULT);
 	else
 		throw (OraError(result, m_envHandle, __TFILE__, __LINE__));
 
@@ -114,12 +114,12 @@ void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR
 
 	// set username and password attributes in user session handle
 	if (result == OCI_SUCCESS)
-		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) loginID, System::TcsLen (loginID)*sizeof(TCHAR), OCI_ATTR_USERNAME, m_errorHandle);
+		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) loginID, epl::System::TcsLen (loginID)*sizeof(TCHAR), OCI_ATTR_USERNAME, m_errorHandle);
 	else
 		throw (OraError(result, m_envHandle, __TFILE__, __LINE__));
 
 	if (result == OCI_SUCCESS)
-		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) password, System::TcsLen (password)*sizeof(TCHAR), OCI_ATTR_PASSWORD, m_errorHandle);
+		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) password, epl::System::TcsLen (password)*sizeof(TCHAR), OCI_ATTR_PASSWORD, m_errorHandle);
 
 	// start the session
 	if (result == OCI_SUCCESS)
@@ -241,7 +241,7 @@ ResultSet* Connection::Select (const TCHAR *selectStmt)
 	}
 	catch (...)
 	{
-		statement->Release ();
+		statement->ReleaseObj();
 		throw;
 	}
 }

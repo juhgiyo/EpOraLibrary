@@ -24,13 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "epConnection.h"
 using namespace epol;
 
-Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize)
+Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize) : SmartObject()
 {
 	EP_ASSERT (rs && name);
 
 	initialize ();
 
-	m_colName = EpTString (name);
+	m_colName = epl::EpTString (name);
 	m_ociType = ociDataType;
 
 	switch (ociDataType)
@@ -135,14 +135,14 @@ bool Column::IsNull () const
 }
 
 
-EpTString Column::ToString () const
+epl::EpTString Column::ToString () const
 {
 	EP_ASSERT (m_resultSet);
 
 	unsigned short	row_no = static_cast <unsigned short> (m_resultSet->m_currentRow % m_resultSet->m_fetchCount);
 	if (m_colType == DT_TEXT &&	m_indicators [row_no] != -1)
 	{
-		return EpTString(reinterpret_cast<TCHAR*>(m_fetchBuffer + m_size * row_no));
+		return epl::EpTString(reinterpret_cast<TCHAR*>(m_fetchBuffer + m_size * row_no));
 	}
 	else
 		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));

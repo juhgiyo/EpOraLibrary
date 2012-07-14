@@ -34,7 +34,7 @@ An Interface for OracleDB Parameter.
 #include "epDateTime.h"
 #include <string>
 
-using namespace epl;
+
 
 namespace epol {
 
@@ -47,7 +47,7 @@ namespace epol {
 
 	Interface for the OracleDB Parameter.
 	*/
-	class EP_ORACLELIB Parameter
+	class EP_ORACLELIB Parameter: public epl::SmartObject
 	{
 		// friends
 		friend class Statement;
@@ -67,7 +67,7 @@ namespace epol {
 		Returns the parameter data by converting it to String
 		@return parameter data in string format.
 		*/
-		EpTString ToString () const;
+		epl::EpTString ToString () const;
 
 		/*!
 		Returns the parameter data by converting it to double
@@ -105,7 +105,7 @@ namespace epol {
 		@param[in] text the text to set for parameter value
 		@return the reference to current Parameter
 		*/
-		Parameter& operator = (EpTString text);
+		Parameter& operator = (epl::EpTString text);
 
 		/*!
 		Set the parameter value to given double value
@@ -132,7 +132,7 @@ namespace epol {
 		Return the name of the parameter
 		@return the name of the parameter
 		*/
-		inline EpTString GetName()
+		inline epl::EpTString GetName()
 		{
 			return m_paramName;
 		}
@@ -155,14 +155,6 @@ namespace epol {
 			return m_ociType;
 		}
 		
-		/*!
-		Release the self object
-		@remark Parameter is freed, when it's Statement is released
-		*/
-		inline void Release ()
-		{
-			
-		}
 	private:
 		/*!
 		Default Constructor
@@ -183,7 +175,7 @@ namespace epol {
 		
 		*Cannot be deleted publicly
 		*/
-		~Parameter ();
+		virtual ~Parameter ();
 
 		/*!
 		Default Copy Constructor
@@ -191,7 +183,7 @@ namespace epol {
 		*Class cannot be copied
 		@param var the Parameter object to copy
 		*/
-		Parameter ( const Parameter&  var ) 
+		Parameter ( const Parameter&  var ) :SmartObject(var)
 		{ 
 			/* could not be copy-constructed */ 
 		};
@@ -249,7 +241,7 @@ namespace epol {
 		void bindResultSet (Statement *to,unsigned int fetchSize = FETCH_SIZE);
 
 		/// The name of the parameter (in the exact case, including leading ':')
-		EpTString		m_paramName;
+		epl::EpTString		m_paramName;
 		/// the type of the parameter
 		DataTypesEnum	m_paramType;
 		/// the Oracle's data type

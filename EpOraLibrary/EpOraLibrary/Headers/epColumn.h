@@ -33,7 +33,7 @@ An Interface for OracleDB Table Column.
 #include <string>
 #include "epDateTime.h"
 
-using namespace epl;
+
 
 namespace epol
 {
@@ -43,7 +43,7 @@ namespace epol
 
 	Interface for the OracleDB Table Column class.
 	*/
-	class EP_ORACLELIB Column
+	class EP_ORACLELIB Column: public epl::SmartObject
 	{
 		friend class ResultSet;
 	public:
@@ -57,7 +57,7 @@ namespace epol
 		Returns the column data by converting it to String
 		@return column data in string format.
 		*/
-		EpTString ToString() const;
+		epl::EpTString ToString() const;
 
 		/*!
 		Returns the column data by converting it to double
@@ -77,14 +77,6 @@ namespace epol
 		*/
 		DateTime ToDateTime() const;
 
-		/*!
-		Release the self object
-		@remark Column is not deleted by the client, but when ResultSet is released instead
-		*/
-		inline void Release ()
-		{
-			
-		}
 
 	private:
 
@@ -107,7 +99,7 @@ namespace epol
 		Deleted when result set is released.
 		*Cannot be deleted publicly
 		*/
-		~Column ();
+		virtual ~Column ();
 
 		/*!
 		Initialize member variables
@@ -125,7 +117,7 @@ namespace epol
 		*Class cannot be copied
 		@param col the column object to copy
 		*/
-		Column (const Column&  col ) 
+		Column (const Column&  col ) :SmartObject(col)
 		{ 
 			/* could not be copy-constructed */ 
 		}
@@ -143,7 +135,7 @@ namespace epol
 
 
 		/// the name of the column
-		EpTString m_colName;	
+		epl::EpTString m_colName;	
 		/// the type of the column
 		DataTypesEnum m_colType;
 		/// the Oracle's data type

@@ -181,7 +181,7 @@ void OraError::oracleError(int oraErr,OCIError *errorHandle, OCIEnv *envHandle)
 
 			m_description += _T(" ");
 #if defined(_UNICODE) || defined(UNICODE)
-			m_description += System::MultiByteToWideChar(errorText);
+			m_description += epl::System::MultiByteToWideChar(errorText);
 #else // defined(_UNICODE) || defined(UNICODE)
 			m_description += errorText;
 #endif // defined(_UNICODE) || defined(UNICODE)
@@ -255,20 +255,20 @@ void OraError::oralibError (int oralibErr)
 
 void OraError::winapiError ()
 {
-	System::FormatLastErrorMessage(m_description,&m_winapiCode);
+	epl::System::FormatLastErrorMessage(m_description,&m_winapiCode);
 }
 
 
 
 
-EpTString OraError::Details () const
+epl::EpTString OraError::Details () const
 {
 	static const TCHAR *errorTypesText [] =
 	{
 		_T("unknown"), _T("Oracle"), _T("OraLib"), _T("Win32 API)")
 	};
 
-	EpTString retString=_T("Source:");
+	epl::EpTString retString=_T("Source:");
 	retString +=m_source;
 	retString += _T("(");
 	retString+=m_lineNo;
@@ -289,7 +289,7 @@ void OraError::concatMessage (const TCHAR *format, va_list va)
 	TCHAR *buffer = EP_NEW TCHAR [ERROR_FORMAT_MAX_MSG_LEN];
 	if (buffer)
 	{
-		System::STPrintf_V(buffer,ERROR_FORMAT_MAX_MSG_LEN-1,format,va);
+		epl::System::STPrintf_V(buffer,ERROR_FORMAT_MAX_MSG_LEN-1,format,va);
 		m_description += _T(": ");
 		m_description += buffer;
 		EP_DELETE [] buffer;

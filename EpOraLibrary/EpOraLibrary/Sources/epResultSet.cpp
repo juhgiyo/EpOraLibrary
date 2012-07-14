@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace epol;
 
-ResultSet::ResultSet (OCIStmt *rs, Connection *useConnection,unsigned int fetchSize)
+ResultSet::ResultSet (OCIStmt *rs, Connection *useConnection,unsigned int fetchSize):SmartObject()
 {
 	initialize ();
 	try
@@ -60,14 +60,14 @@ void ResultSet::initialize ()
 void ResultSet::cleanUp ()
 {
 	for (Columns::iterator i=m_columns.begin (); i!=m_columns.end (); ++i)
-		EP_DELETE (*i);
+		(*i)->ReleaseObj();
 	m_columns.clear ();
 
 	if (m_rsHandle) 
 		m_rsHandle = NULL;
 
 	if (m_stmt) 
-		m_stmt->Release ();
+		m_stmt->ReleaseObj();
 	m_stmt = NULL;
 }
 

@@ -43,7 +43,7 @@ namespace epol {
 
 	Interface for the OracleDB Result Set.
 	*/
-	class ResultSet
+	class ResultSet:public epl::SmartObject
 	{
 		// friends
 		friend class Connection;
@@ -91,13 +91,6 @@ namespace epol {
 		*/
 		Column& operator [] (unsigned short columnIndex);
 
-		/*!
-		Release the self object
-		*/
-		inline void Release () 
-		{
-			EP_DELETE this; 
-		}
 
 	private:
 		/*!
@@ -116,7 +109,7 @@ namespace epol {
 		Use ResultSet::Release instead
 		*Cannot be deleted publicly
 		*/
-		~ResultSet ();
+		virtual ~ResultSet ();
 		
 		/*!
 		Default Copy Constructor
@@ -124,7 +117,7 @@ namespace epol {
 		*Class cannot be copied
 		@param rs the ResultSet object to copy
 		*/
-		ResultSet ( const ResultSet& rs) 
+		ResultSet ( const ResultSet& rs): SmartObject(rs) 
 		{ 
 			/* could not be copy-constructed */ 
 		}
@@ -197,7 +190,7 @@ namespace epol {
 		/// Type Definition for Columns
 		typedef std::vector <Column*>	Columns;
 		/// Type Definition for ColumnsMap
-		typedef std::map <EpTString, Column*>	ColumnsMap;
+		typedef std::map <epl::EpTString, Column*>	ColumnsMap;
 		/// array with Result Set columns
 		Columns			m_columns;		
 		/// map with columns against their names

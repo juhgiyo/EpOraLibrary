@@ -23,10 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "epOraDefines.h"
 #include <tchar.h>
 
-using namespace epl;
+
 using namespace epol;
 
-Parameter::Parameter (Statement *to, const TCHAR *name, DataTypesEnum type, unsigned int fetchSize)		// = FETCH_SIZE
+Parameter::Parameter (Statement *to, const TCHAR *name, DataTypesEnum type, unsigned int fetchSize) :SmartObject()		// = FETCH_SIZE
 {
 	initialize ();
 	try
@@ -69,7 +69,7 @@ void Parameter::cleanUp ()
 		m_bindHandle = NULL;
 
 	if (m_resultSet) 
-		EP_DELETE m_resultSet;
+		m_resultSet->ReleaseObj();
 	m_resultSet = NULL;
 
 	if (m_rsHandle)
@@ -225,7 +225,7 @@ void Parameter::bindResultSet (Statement *to, unsigned int fetchSize)
 }
 
 
-Parameter& Parameter::operator = (EpTString text)
+Parameter& Parameter::operator = (epl::EpTString text)
 {
 	EP_ASSERT (m_stmt);
 
@@ -308,12 +308,12 @@ Parameter& Parameter::operator = (const DateTime& dateTime)
 }
 
 
-EpTString Parameter::ToString () const
+epl::EpTString Parameter::ToString () const
 {
 	EP_ASSERT (m_stmt);
 
 	if (m_paramType == DT_TEXT && m_indicator != ORADATA_NULL) 
-		return EpTString(reinterpret_cast<TCHAR*>(m_fetchBuffer));
+		return epl::EpTString(reinterpret_cast<TCHAR*>(m_fetchBuffer));
 	else
 		throw (OraError(EC_BAD_OUTPUT_TYPE, __TFILE__, __LINE__));
 }

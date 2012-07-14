@@ -36,7 +36,7 @@ An Interface for OracleDB SQL Statement.
 #include <map>
 #include "oci.h"
 
-using namespace epl;
+
 namespace epol {
 	
 	class ResultSet;
@@ -48,7 +48,7 @@ namespace epol {
 
 	Interface for the OracleDB SQL Statement.
 	*/
-	class Statement
+	class Statement:public epl::SmartObject
 	{
 		// friends
 		friend class Parameter;
@@ -79,13 +79,6 @@ namespace epol {
 		*/
 		ResultSet *Select();
 
-		/*!
-		Release the self object
-		*/
-		inline void Release ()
-		{
-			EP_DELETE this; 
-		}
 
 		/*!
 		Return the flag whether statement is prepared or not
@@ -145,7 +138,7 @@ namespace epol {
 		Use Statement::Release instead
 		*Cannot be deleted publicly
 		*/
-		~Statement ();
+		virtual ~Statement ();
 
 		/*!
 		Default Copy Constructor
@@ -153,7 +146,7 @@ namespace epol {
 		*Class cannot be copied
 		@param stmt the Statement object to copy
 		*/
-		Statement (const Statement& stmt) 
+		Statement (const Statement& stmt) :SmartObject(stmt)
 		{
 			/* could not be copy-constructed */ 
 		};
@@ -195,7 +188,7 @@ namespace epol {
 		/// Type definition for Parameters
 		typedef std::vector <Parameter *> Parameters;
 		/// Type definition for ParametersMap
-		typedef std::map <EpTString, Parameter *> ParametersMap;
+		typedef std::map <epl::EpTString, Parameter *> ParametersMap;
 		/// array with bound parameters
 		Parameters		m_parameters;	
 		/// a map with paramters against their names

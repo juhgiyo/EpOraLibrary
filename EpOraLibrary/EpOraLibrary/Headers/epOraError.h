@@ -34,7 +34,7 @@ An Interface for OracleDB Error.
 #include "oci.h"
 #include <string>
 
-using namespace epl;
+
 
 namespace epol {
 
@@ -111,7 +111,7 @@ namespace epol {
 		*In a format, similar to display method output
 		@return the detailed error in text
 		*/
-		EpTString Details() const;
+		epl::EpTString Details() const;
 
 	private:
 
@@ -161,9 +161,9 @@ namespace epol {
 		/// Windows API error code
 		unsigned long	m_winapiCode;
 		/// the description of error in text
-		EpTString	m_description;
+		epl::EpTString	m_description;
 		/// the source file where the error occurred
-		EpTString	m_source;			
+		epl::EpTString	m_source;			
 		/// the line number where the error occurred
 		long		m_lineNo;
 

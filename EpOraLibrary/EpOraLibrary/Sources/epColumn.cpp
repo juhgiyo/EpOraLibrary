@@ -36,7 +36,6 @@ Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, un
 	switch (ociDataType)
 	{
 	case	SQLT_INT:	// integer
-	case	SQLT_LNG:	// long
 	case	SQLT_UIN:	// unsigned int
 
 	case	SQLT_NUM:	// numeric
@@ -61,6 +60,7 @@ Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, un
 	case	SQLT_AFC:	// ansi fixed char
 	case	SQLT_AVC:	// ansi var char
 	case	SQLT_VST:	// oci string type
+	case	SQLT_LNG:	// long character string type
 		m_ociType = SQLT_STR;
 		m_colType = DT_TEXT;
 		m_size = (maxDataSize + 1) * sizeof(TCHAR);

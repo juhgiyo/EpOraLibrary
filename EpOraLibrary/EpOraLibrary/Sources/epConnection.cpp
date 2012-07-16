@@ -66,7 +66,7 @@ void Connection::initialize ()
 
 void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR *password,unsigned long envMode, bool nonBlockingMode)
 {
-	EP_ASSERT (serviceName && loginID && password);
+	EP_ASSERT (serviceName);
 	EP_ASSERT (!m_isOpened);
 
 	int	result;
@@ -114,12 +114,18 @@ void Connection::Open (const TCHAR *serviceName,const TCHAR *loginID,const TCHAR
 
 	// set username and password attributes in user session handle
 	if (result == OCI_SUCCESS)
-		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) loginID, epl::System::TcsLen (loginID)*sizeof(TCHAR), OCI_ATTR_USERNAME, m_errorHandle);
+	{
+		if(loginID)
+			result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) loginID, epl::System::TcsLen (loginID)*sizeof(TCHAR), OCI_ATTR_USERNAME, m_errorHandle);
+	}
 	else
 		throw (OraError(result, m_envHandle, __TFILE__, __LINE__));
 
 	if (result == OCI_SUCCESS)
-		result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) password, epl::System::TcsLen (password)*sizeof(TCHAR), OCI_ATTR_PASSWORD, m_errorHandle);
+	{
+		if(loginID && password)
+			result = OCIAttrSet ( m_sessionHandle, OCI_HTYPE_SESSION, (void *) password, epl::System::TcsLen (password)*sizeof(TCHAR), OCI_ATTR_PASSWORD, m_errorHandle);
+	}
 
 	// start the session
 	if (result == OCI_SUCCESS)

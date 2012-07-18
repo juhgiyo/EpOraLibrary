@@ -819,6 +819,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epBaseClientUDP.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epBaseFile.h"
 				>
 			</File>
@@ -843,6 +847,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epBaseServerUDP.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epBaseServerWorker.h"
 				>
 			</File>
@@ -852,6 +860,10 @@
 			</File>
 			<File
 				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerSimple.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerUDP.h"
 				>
 			</File>
 			<File

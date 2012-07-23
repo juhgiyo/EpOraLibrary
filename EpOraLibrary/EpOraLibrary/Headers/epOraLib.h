@@ -49,5 +49,6 @@ An Interface for EP Oracle Library.
 #endif  //EP_ORACLELIB_DLL_EXPORT
 
 #include "epl.h"
+using namespace epl;
 
 #endif //__EP_ORACLE_LIB_H__

@@ -81,22 +81,6 @@ namespace epl
 		virtual ~BaseWorkerThread();
 
 		/*!
-		Assignment operator overloading
-		@param[in] b the second object
-		@return the new copied object
-		*/
-		BaseWorkerThread &operator=(const BaseWorkerThread & b)
-		{
-			if(this!=&b)
-			{
-				m_workPool=b.m_workPool;
-				m_lifePolicy=b.m_lifePolicy;
-				m_callBackClass=b.m_callBackClass;
-				Thread::operator =(b);
-			}
-			return *this;
-		}
-		/*!
 		Push in the new work to the work pool.
 		@param[in] work the new work to put into the work pool.
 		*/
@@ -130,12 +114,6 @@ namespace epl
 		}
 
 		/*!
-		Set new Job Processor.
-		@param[in] a set new Job Processor for this thread.
-		*/
-		virtual void SetArg(void* a);
-
-		/*!
 		Set call back class to call when work is done.
 		@param[in] callBackClass the call back class.
 		*/
@@ -147,7 +125,29 @@ namespace epl
 		*/
 		int GetJobCount() const;
 
+		/*!
+		Assignment operator overloading
+		@param[in] b the second object
+		@return the new copied object
+		*/
+		BaseWorkerThread &operator=(const BaseWorkerThread & b)
+		{
+			if(this!=&b)
+			{
+				LockObj lock(m_callBackLock);
+				Thread::operator =(b);
+				m_callBackClass=b.m_callBackClass;
+				
+			}
+			return *this;
+		}
 	protected:
+		/*!
+		Set new Job Processor.
+		@param[in] a set new Job Processor for this thread.
+		*/
+		virtual void setArg(void* a);
+
 		/*!
 		Pure Worker Thread Code.
 		*/
@@ -164,6 +164,11 @@ namespace epl
 		ThreadLifePolicy m_lifePolicy;
 		/// the call back class
 		void *m_callBackClass;
+
+		/// callback Lock
+		BaseLock * m_callBackLock;
+		/// Thread Lock Policy
+		LockPolicy m_lockPolicy;
 
 	};
 }

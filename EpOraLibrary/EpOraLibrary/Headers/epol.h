@@ -1,6 +1,7 @@
 /*!
 @file epol.h
 @author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
+		<http://github.com/juhgiyo/eporalibrary>
 @date May 24, 2012
 @brief Interface for EP Oracle Library
 @version 1.0

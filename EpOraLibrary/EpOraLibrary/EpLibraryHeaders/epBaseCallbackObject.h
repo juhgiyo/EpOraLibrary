@@ -1,9 +1,9 @@
 /*! 
-@file epBaseServerWorkerSimple.h
+@file epBaseCallbackObject.h
 @author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
 		<http://github.com/juhgiyo/eplibrary>
-@date February 13, 2012
-@brief Simple Base Worker Interface
+@date July 20, 2012
+@brief Base Server Callback Object Interface
 @version 2.0
 
 @section LICENSE
@@ -25,77 +25,75 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 @section DESCRIPTION
 
-An Interface for Simple Base Worker.
-(Send->Receive->Send->Receive Model)
+An Interface for Base Callback Object.
 
 */
-#ifndef __EP_BASE_SERVER_WORKER_SIMPLE_H__
-#define __EP_BASE_SERVER_WORKER_SIMPLE_H__
+#ifndef __EP_BASE_CALLBACK_OBJECT_H__
+#define __EP_BASE_CALLBACK_OBJECT_H__
 
 #include "epFoundationLib.h"
-#include "epBaseServerWorker.h"
-namespace epl
-{
+#include "epSystem.h"
+#include "epThread.h"
+#include "epSmartObject.h"
+namespace epl{
+
 	/*! 
-	@class BaseServerWorkerSimple epBaseServerWorkerSimple.h
-	@brief A class for Simple Base Server Worker.
+	@class BaseCallbackObject epBaseCallbackObject.h
+	@brief A class for Base Callback Object.
 	*/
-	class EP_FOUNDATION BaseServerWorkerSimple:public BaseServerWorker
+	class EP_FOUNDATION BaseCallbackObject:public SmartObject
 	{
-		
 	public:
 		/*!
 		Default Constructor
 
-		Initializes the Worker
+		Initializes the Object
 		@param[in] lockPolicyType The lock policy
 		*/
-		BaseServerWorkerSimple(LockPolicy lockPolicyType=EP_LOCK_POLICY);
+		BaseCallbackObject(LockPolicy lockPolicyType=EP_LOCK_POLICY):SmartObject(lockPolicyType)
+		{
+		}
 
 		/*!
 		Default Copy Constructor
 
-		Initializes the BaseServer
+		Initializes the Object
 		@param[in] b the second object
 		*/
-		BaseServerWorkerSimple(const BaseServerWorkerSimple& b);
-
+		BaseCallbackObject(const BaseCallbackObject& b):SmartObject(b)
+		{
+		}
 		/*!
 		Default Destructor
 
-		Destroy the Worker
+		Destroy the Object
 		*/
-		virtual ~BaseServerWorkerSimple();
+		virtual ~BaseCallbackObject()
+		{
+
+		}
 
 		/*!
 		Assignment operator overloading
 		@param[in] b the second object
 		@return the new copied object
 		*/
-		BaseServerWorkerSimple & operator=(const BaseServerWorkerSimple&b)
+		BaseCallbackObject & operator=(const BaseCallbackObject&b)
 		{
 			if(this!=&b)
 			{
-				BaseServerWorker::operator =(b);
+				SmartObject::operator =(b);
 			}
 			return *this;
 		}
 
-	protected:
 		/*!
-		Parse the given packet and do relevant operation
-		@remark  Subclasses must implement this
-		@param[in] packet the packet to parse
+		Call back function
+		@remark Sub-class should implement this to get call back.
 		*/
-		virtual void parsePacket(const Packet &packet)=0;
-
-	private:
-		/*!
-		thread loop function
-		*/
-		virtual void execute();
+		virtual void Callback()=0;
 	};
-
 }
 
-#endif //__EP_BASE_SERVER_WORKER_SIMPLE_H__
+
+#endif //__EP_BASE_CALLBACK_OBJECT_H__

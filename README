@@ -64,6 +64,11 @@ EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 60
 606u had kindly approved referencing his/her oraLib freely without any restriction for EpOraLibrary development.
 
 
+REFERENCE
+
+* OraLib <http://www.codeproject.com/Articles/1925/OraLib-a-lightweight-C-wrapper-over-Oracle-s-OCI-l>
+* EpLibrary 2.0 <https://github.com/juhgiyo/EpLibrary>
+
 LICENSE
 
                     GNU GENERAL PUBLIC LICENSE

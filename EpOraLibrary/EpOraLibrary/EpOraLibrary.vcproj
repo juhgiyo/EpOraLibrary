@@ -807,19 +807,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EpLibraryHeaders\epBaseClient.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseClientEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseClientSimple.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseClientUDP.h"
+				RelativePath=".\EpLibraryHeaders\epBaseCallbackObject.h"
 				>
 			</File>
 			<File
@@ -840,30 +828,6 @@
 			</File>
 			<File
 				RelativePath=".\EpLibraryHeaders\epBaseOutputter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServerUDP.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServerWorker.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerSimple.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epBaseServerWorkerUDP.h"
 				>
 			</File>
 			<File
@@ -964,14 +928,6 @@
 			</File>
 			<File
 				RelativePath=".\EpLibraryHeaders\epNoLock.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epPacket.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EpLibraryHeaders\epPacketContainer.h"
 				>
 			</File>
 			<File

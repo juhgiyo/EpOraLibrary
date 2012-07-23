@@ -85,20 +85,6 @@ An Interface for EP Foundation Library
 #include "epTaskbarNotifier.h"
 #include "epWinProcessHelper.h"
 
-//Server
-#include "epBaseClient.h"
-#include "epBaseClientEx.h"
-#include "epBaseClientSimple.h"
-#include "epBaseClientUDP.h"
-#include "epBaseServer.h"
-#include "epBaseServerUDP.h"
-#include "epBaseServerWorker.h"
-#include "epBaseServerWorkerEx.h"
-#include "epBaseServerWorkerSimple.h"
-#include "epBaseServerWorkerUDP.h"
-#include "epPacket.h"
-#include "epPacketContainer.h"
-
 //System
 #include "epAssert.h"
 #include "epLocale.h"
@@ -124,5 +110,6 @@ An Interface for EP Foundation Library
 #include "epBaseWorkerThread.h"
 #include "epWorkerThreadDelegate.h"
 #include "epWorkerThreadFactory.h"
+#include "epBaseCallbackObject.h"
 
 #endif //__EP_EPL_H__

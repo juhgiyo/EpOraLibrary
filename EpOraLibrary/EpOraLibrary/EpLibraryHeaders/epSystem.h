@@ -56,6 +56,22 @@ An Interface for System Class.
 #undef StrStr
 #endif //StrStr
 
+	/*!
+	@def WAITTIME_INIFINITE
+	@brief infinitely wait for the object
+
+	Macro for infinite wait time.
+	*/
+#define WAITTIME_INIFINITE 0xFFFFFFFF  // Infinite timeout
+
+	/*!
+	@def WAITTIME_IGNORE
+	@brief no waiting time
+
+	Macro no waiting time.
+	*/
+#define WAITTIME_IGNORE    0  // Ignore waiting
+
 namespace epl
 {
 
@@ -876,6 +892,33 @@ namespace epl
 		*/
 		static bool IsMultiByte(byte *multiByteString, unsigned int byteLength);
 
+		/*!
+		Output the debug message
+		@param[in] format the string to output
+		*/
+		static void OutputDebugString(TCHAR * format,...);
+
+		/*!
+		Wait for a handle for given time
+		@param[in] handle the handle to wait for
+		@param[in] milliSec the time for waiting (WAITTIME_INIFINITE to wait forever)
+		@return one of (WAIT_ABANDONED, WAIT_OBJECT_0, WAIT_TIMEOUT)
+		*/
+		static unsigned long WaitForSingleObject(HANDLE handle,unsigned long milliSec);
+
+		/*!
+		Return the current thread handle
+		@return current thread handle
+		*/
+		static HANDLE GetCurrentThread();
+
+		/*!
+		Terminate the given thread with given exit code
+		@param[in] threadHandle thread to terminate
+		@param[in] exitCode the eixt code for the thread to exit
+		@return result of the termination
+		*/
+		static long TerminateThread(HANDLE threadHandle, unsigned long exitCode);
 	};
 
 }

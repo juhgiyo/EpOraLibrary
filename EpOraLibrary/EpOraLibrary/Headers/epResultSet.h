@@ -43,7 +43,7 @@ namespace epol {
 
 	Interface for the OracleDB Result Set.
 	*/
-	class ResultSet:public epl::SmartObject
+	class EP_ORACLELIB  ResultSet:public epl::SmartObject
 	{
 		// friends
 		friend class Connection;

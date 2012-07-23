@@ -44,7 +44,7 @@ namespace epol {
 
 	Interface for the OraError.
 	*/
-	class OraError
+	class EP_ORACLELIB OraError
 	{
 	public:
 		/*!

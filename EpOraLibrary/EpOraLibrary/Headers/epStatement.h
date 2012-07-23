@@ -48,7 +48,7 @@ namespace epol {
 
 	Interface for the OracleDB SQL Statement.
 	*/
-	class Statement:public epl::SmartObject
+	class EP_ORACLELIB Statement:public epl::SmartObject
 	{
 		// friends
 		friend class Parameter;

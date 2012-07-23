@@ -202,7 +202,7 @@
 				AdditionalDependencies="oci.lib EpFoundation_DLL_D.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_DLL_D.dll"
 				AdditionalLibraryDirectories=".\Libs\Debug DLL"
-				TargetMachine="1"
+				TargetMachine="0"
 			/>
 			<Tool
 				Name="VCALinkTool"

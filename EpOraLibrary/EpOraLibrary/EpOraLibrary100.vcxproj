@@ -162,10 +162,14 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL Unicode|Win32'">$(ProjectName)U_DLL_D100</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release DLL|Win32'">$(ProjectName)_DLL100</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release DLL Unicode|Win32'">$(ProjectName)U_DLL100</TargetName>
-    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Debug DLL Unicode|Win32'">false</LinkDelaySign>
-    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Debug DLL|Win32'">false</LinkDelaySign>
-    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Release DLL|Win32'">false</LinkDelaySign>
-    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Release DLL Unicode|Win32'">false</LinkDelaySign>
+    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Debug DLL Unicode|Win32'">
+    </LinkDelaySign>
+    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Debug DLL|Win32'">
+    </LinkDelaySign>
+    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Release DLL|Win32'">
+    </LinkDelaySign>
+    <LinkDelaySign Condition="'$(Configuration)|$(Platform)'=='Release DLL Unicode|Win32'">
+    </LinkDelaySign>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -247,7 +251,8 @@
       <AssemblyDebug>false</AssemblyDebug>
       <SubSystem>NotSet</SubSystem>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
-      <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
+      <CLRUnmanagedCodeCheck>
+      </CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL Unicode|Win32'">
@@ -278,7 +283,8 @@
       <SubSystem>NotSet</SubSystem>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <TargetMachine>NotSet</TargetMachine>
-      <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
+      <CLRUnmanagedCodeCheck>
+      </CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Unicode|Win32'">
@@ -335,7 +341,8 @@
       <SubSystem>NotSet</SubSystem>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <TargetMachine>NotSet</TargetMachine>
-      <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
+      <CLRUnmanagedCodeCheck>
+      </CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release DLL Unicode|Win32'">
@@ -365,7 +372,8 @@
       <SubSystem>NotSet</SubSystem>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <TargetMachine>NotSet</TargetMachine>
-      <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
+      <CLRUnmanagedCodeCheck>
+      </CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Unicode|Win32'">

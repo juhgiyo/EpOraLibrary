@@ -4,7 +4,7 @@
 	Version="8.00"
 	Name="EpOraLibrary"
 	ProjectGUID="{2B8A716F-FB04-4425-B2E7-E5B07CFC171B}"
-	RootNamespace="EpOraLibrary"
+	RootNamespace="EpOraLibrary80"
 	>
 	<Platforms>
 		<Platform

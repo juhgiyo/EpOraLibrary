@@ -34,12 +34,18 @@ An Interface for EP Oracle Library.
 #ifdef EP_ORACLELIB_DLL_EXPORT
 
 #define EP_ORACLELIB __declspec(dllexport)
+#ifndef EP_LIBRARY_DLL_IMPORT
+#define EP_LIBRARY_DLL_IMPORT
+#endif //EP_LIBRARY_DLL_IMPORT
 
 #else   //EP_ORACLELIB_DLL_EXPORT
 
 #ifdef EP_ORACLE_DLL_IMPORT
 
 #define EP_ORACLELIB __declspec(dllimport)
+#ifndef EP_LIBRARY_DLL_IMPORT
+#define EP_LIBRARY_DLL_IMPORT
+#endif //EP_LIBRARY_DLL_IMPORT
 
 #else   //EP_ORACLELIB_DLL_IMPORT
 

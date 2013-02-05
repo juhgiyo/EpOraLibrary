@@ -8,8 +8,8 @@ in many cases such as
 - etc.
 EpOraLibrary solves such issues, and makes it easier for Visual C++ developers 
 to use Oracle Database Operation within their development projects. 
-EpOraLibrary is a custom wrapper library of Oracle OCI Library, and it supports 
-Visual C++ 2005/2008/2010/2012.
+EpOraLibrary is a custom wrapper library of Oracle OCI Library under a GPL3.0 license.
+It supports Visual C++ 2005/2008/2010/2012.
 Source can be downloaded at <http://github.com/juhgiyo/eporalibrary>
 
 FEATURES

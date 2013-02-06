@@ -223,6 +223,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -295,6 +298,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -440,6 +446,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -512,6 +521,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -807,10 +819,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EpLibraryHeaders\epBaseFile.h"
-				>
-			</File>
-			<File
 				RelativePath=".\EpLibraryHeaders\epBaseJob.h"
 				>
 			</File>
@@ -824,6 +832,10 @@
 			</File>
 			<File
 				RelativePath=".\EpLibraryHeaders\epBaseOutputter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EpLibraryHeaders\epBaseTextFile.h"
 				>
 			</File>
 			<File

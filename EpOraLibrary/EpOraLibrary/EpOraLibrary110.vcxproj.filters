@@ -164,9 +164,6 @@
     <ClInclude Include="EpLibraryHeaders\epAssert.h">
       <Filter>EpLibraryHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="EpLibraryHeaders\epBaseFile.h">
-      <Filter>EpLibraryHeaders</Filter>
-    </ClInclude>
     <ClInclude Include="EpLibraryHeaders\epBaseJob.h">
       <Filter>EpLibraryHeaders</Filter>
     </ClInclude>
@@ -339,6 +336,9 @@
       <Filter>EpLibraryHeaders</Filter>
     </ClInclude>
     <ClInclude Include="EpLibraryHeaders\epXMLite.h">
+      <Filter>EpLibraryHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="EpLibraryHeaders\epBaseTextFile.h">
       <Filter>EpLibraryHeaders</Filter>
     </ClInclude>
   </ItemGroup>

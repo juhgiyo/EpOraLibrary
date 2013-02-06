@@ -446,6 +446,7 @@
     <ClCompile Include="Sources\epStatement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EpLibraryHeaders\epBaseTextFile.h" />
     <ClInclude Include="Headers\epColumn.h" />
     <ClInclude Include="Headers\epConnection.h" />
     <ClInclude Include="Headers\epDateTime.h" />
@@ -487,7 +488,6 @@
     <ClInclude Include="OciHeaders\xa.h" />
     <ClInclude Include="EpLibraryHeaders\epAlgorithm.h" />
     <ClInclude Include="EpLibraryHeaders\epAssert.h" />
-    <ClInclude Include="EpLibraryHeaders\epBaseFile.h" />
     <ClInclude Include="EpLibraryHeaders\epBaseJob.h" />
     <ClInclude Include="EpLibraryHeaders\epBaseJobProcessor.h" />
     <ClInclude Include="EpLibraryHeaders\epBaseLock.h" />

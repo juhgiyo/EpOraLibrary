@@ -847,6 +847,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epCmdLineOptions.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epConsoleHelper.h"
 				>
 			</File>

@@ -447,6 +447,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EpLibraryHeaders\epBaseTextFile.h" />
+    <ClInclude Include="EpLibraryHeaders\epCmdLineOptions.h" />
     <ClInclude Include="Headers\epColumn.h" />
     <ClInclude Include="Headers\epConnection.h" />
     <ClInclude Include="Headers\epDateTime.h" />

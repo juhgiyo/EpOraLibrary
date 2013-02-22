@@ -1,9 +1,9 @@
 /*! 
-@file epMutex.h
+@file epEventEx.h
 @author Woong Gyu La a.k.a Chris. <juhgiyo@gmail.com>
 		<http://github.com/juhgiyo/eplibrary>
 @date April 16, 2011
-@brief Mutex Interface
+@brief EventEx Interface
 @version 2.0
 
 @section LICENSE
@@ -25,11 +25,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 @section DESCRIPTION
 
-An Interface for Mutex Class.
+An Interface for EventEx Class.
 
 */
-#ifndef __EP_MUTEX_H__
-#define __EP_MUTEX_H__
+#ifndef __EP_EVENT_EX_H__
+#define __EP_EVENT_EX_H__
 #include "epLib.h"
 #include "epSystem.h"
 #include "epBaseLock.h"
@@ -38,55 +38,56 @@ namespace epl
 {
 
 	/*! 
-	@class Mutex epMutex.h
-	@brief A class that handles the mutex functionality.
+	@class EventEx epEventEx.h
+	@brief A class that handles the event functionality.
 	*/
-	class EP_LIBRARY Mutex :public BaseLock
+	class EP_LIBRARY EventEx :public BaseLock
 	{
 	public:
 		/*!
 		Default Constructor
 
 		Initializes the lock.
-		@remark mutexName must be supplied if the object will be used across process boundaries.
-		@param[in] mutexName name of the mutex to distinguish
+		@remark eventName must be supplied if the object will be used across process boundaries.
+		@param[in] eventName name of the event to distinguish
 		@param[in] lpsaAttributes the security attribute
 		*/
-		Mutex(const TCHAR *mutexName=NULL, LPSECURITY_ATTRIBUTES lpsaAttributes = NULL);
+		EventEx(const TCHAR *eventName=NULL, LPSECURITY_ATTRIBUTES lpsaAttributes = NULL);
 
 		/*!
 		Default Constructor
 
 		Initializes the lock.
-		@param[in] isInitialOwner flag to own the mutex on creation
-		@param[in] mutexName name of the mutex to distinguish
+		@param[in] isInitialRaised flag to raise the event on creation
+		@param[in] isManualReset flag to whether event is reset manually
+		@param[in] eventName name of the event to distinguish
 		@param[in] lpsaAttributes the security attribute
-		@remark mutexName must be supplied if the object will be used across process boundaries.
-		@remark if isInitialOwner is TRUE then the mutex is created as locked.
+		@remark eventName must be supplied if the object will be used across process boundaries.
+		@remark if isInitialRaised is TRUE then the event is raised on creation.
 		*/
-		Mutex(bool isInitialOwner,const TCHAR *mutexName=NULL , LPSECURITY_ATTRIBUTES lpsaAttributes=NULL);
+		EventEx(bool isInitialRaised,bool isManualReset,const TCHAR *eventName=NULL , LPSECURITY_ATTRIBUTES lpsaAttributes=NULL);
 
 		/*!
 		Default Copy Constructor
 
-		Initializes the Mutex
+		Initializes the EventEx
 		@param[in] b the second object
 		*/
-		Mutex(const Mutex& b);
+		EventEx(const EventEx& b);
 
 		/*!
 		Default Destructor
 
 		Deletes the lock
 		*/
-		virtual ~Mutex();
+		virtual ~EventEx();
 
 		/*!
 		Assignment operator overloading
 		@param[in] b the second object
 		@return the new copied object
 		*/
-		Mutex & operator=(const Mutex&b);
+		EventEx & operator=(const EventEx&b);
 
 
 		/*!
@@ -121,32 +122,38 @@ namespace epl
 		virtual void Unlock();
 
 		/*!
-		Returns the flag whether this mutex is abandoned or now.
-		@return true if the mutex is abandoned, otherwise false.
+		Reset the event raised
+		@return true if succeeded otherwise false
 		*/
-		bool IsMutexAbandoned() const;
+		bool ResetEvent();
+
+		/*!
+		Returns the flag whether this event is resetting manually.
+		@return true if the event is resetting manually, otherwise false.
+		*/
+		bool IsManualReset() const;
 
 	private:
 
-		/// Mutex
-		HANDLE m_mutex;
+		/// EventEx
+		HANDLE m_event;
 		/// Creation Security Info
 		LPSECURITY_ATTRIBUTES m_lpsaAttributes;
-		/// Flag for whether the mutex is locked on creation
-		bool m_isInitialOwner;
-		/// Flag for whether the mutex is abandoned or not.
-		bool m_isMutexAbandoned;
-		/// Mutex Name
+		/// Flag for whether the event is raised on creation
+		bool m_isInitialRaised;
+		/// Flag for whether the event is resetting manually.
+		bool m_isManualReset;
+		/// Event Name
 		EpTString m_name;
 
 #if defined(_DEBUG) && defined(ENABLE_POSSIBLE_DEADLOCK_CHECK)
-		/// thread ID that currently holding this mutex
+		/// thread ID that currently holding this event
 		unsigned long m_threadID;
-		/// Mutex Debug
-		HANDLE m_mutexDebug;
+		/// EventEx Debug
+		HANDLE m_eventDebug;
 #endif //defined(_DEBUG) && defined(ENABLE_POSSIBLE_DEADLOCK_CHECK)
 	};
 
 }
 
-#endif //__EP_MUTEX_H__
+#endif //__EP_EVENT_EX_H__

@@ -868,6 +868,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EpLibraryHeaders\epEventEx.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EpLibraryHeaders\epException.h"
 				>
 			</File>

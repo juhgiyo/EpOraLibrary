@@ -22,6 +22,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "epOraError.h"
 #include "epResultSet.h"
 #include "epConnection.h"
+
+#if defined(_DEBUG) && defined(EP_ENABLE_CRTDBG)
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif // defined(_DEBUG) && defined(EP_ENABLE_CRTDBG)
+
+
 using namespace epol;
 
 Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize) : SmartObject()

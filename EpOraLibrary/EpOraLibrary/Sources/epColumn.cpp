@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace epol;
 
-Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize) : SmartObject()
+Column::Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, unsigned int fetchSize) : SmartObject()
 {
 	EP_ASSERT (rs && name);
 

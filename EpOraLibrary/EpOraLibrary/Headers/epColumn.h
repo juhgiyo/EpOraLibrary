@@ -91,7 +91,7 @@ namespace epol
 		@param[in] maxDataSize the maximum data size of data type given
 		@param[in] fetchSize the size of fetching
 		*/
-		Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, int fetchSize = FETCH_SIZE);
+		Column (ResultSet *rs, const TCHAR *name, unsigned short ociDataType, unsigned int maxDataSize, unsigned int fetchSize = FETCH_SIZE);
 
 		/*!
 		Default Destructor

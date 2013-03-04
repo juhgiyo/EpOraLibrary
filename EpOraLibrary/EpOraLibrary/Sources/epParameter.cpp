@@ -185,7 +185,7 @@ void Parameter::bind (Statement *to)
 	}
 
 	m_dataLen = static_cast<short> (m_size);
-	result = OCIBindByName (to->m_stmtHandle, &m_bindHandle, to->m_conn->m_errorHandle, (unsigned char *) (m_paramName.data ()), m_paramName.length ()*sizeof(TCHAR), m_fetchBuffer, m_size, m_ociType, &m_indicator,	&m_dataLen,	NULL,0,	NULL,OCI_DEFAULT);
+	result = OCIBindByName (to->m_stmtHandle, &m_bindHandle, to->m_conn->m_errorHandle, (unsigned char *) (m_paramName.data ()), static_cast<unsigned int>(m_paramName.length ()*sizeof(TCHAR)), m_fetchBuffer, m_size, m_ociType, &m_indicator,	&m_dataLen,	NULL,0,	NULL,OCI_DEFAULT);
 
 #if defined(_UNICODE) || defined(UNICODE)
 	if (result == OCI_SUCCESS)
@@ -211,7 +211,7 @@ void Parameter::bindResultSet (Statement *to, unsigned int fetchSize)
 
 	if (result == OCI_SUCCESS)
 	{
-		result = OCIBindByName ( to->m_stmtHandle,&m_bindHandle, to->m_conn->m_errorHandle,(text *) m_paramName.data (),m_paramName.length ()*sizeof(TCHAR), &m_rsHandle, m_size, m_ociType, NULL, NULL, NULL, 0, NULL, OCI_DEFAULT);
+		result = OCIBindByName ( to->m_stmtHandle,&m_bindHandle, to->m_conn->m_errorHandle,(text *) m_paramName.data (),static_cast<unsigned int>(m_paramName.length ()*sizeof(TCHAR)), &m_rsHandle, m_size, m_ociType, NULL, NULL, NULL, 0, NULL, OCI_DEFAULT);
 #if defined(_UNICODE) || defined(UNICODE)
 		if (result == OCI_SUCCESS)
 		{

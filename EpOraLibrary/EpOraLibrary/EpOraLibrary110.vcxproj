@@ -449,6 +449,7 @@
     <ClInclude Include="EpLibraryHeaders\epBaseTextFile.h" />
     <ClInclude Include="EpLibraryHeaders\epCmdLineOptions.h" />
     <ClInclude Include="EpLibraryHeaders\epEventEx.h" />
+    <ClInclude Include="EpLibraryHeaders\epLogWriter.h" />
     <ClInclude Include="Headers\epColumn.h" />
     <ClInclude Include="Headers\epConnection.h" />
     <ClInclude Include="Headers\epDateTime.h" />

@@ -371,6 +371,9 @@
     <ClInclude Include="EpLibraryHeaders\epIpcServerInterfaces.h">
       <Filter>EpLibraryHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="EpLibraryHeaders\epWinResizer.h">
+      <Filter>EpLibraryHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">

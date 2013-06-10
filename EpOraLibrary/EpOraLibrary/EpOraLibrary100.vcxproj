@@ -421,6 +421,7 @@
     <ClInclude Include="EpLibraryHeaders\epIpcServer.h" />
     <ClInclude Include="EpLibraryHeaders\epIpcServerInterfaces.h" />
     <ClInclude Include="EpLibraryHeaders\epLogWriter.h" />
+    <ClInclude Include="EpLibraryHeaders\epWinResizer.h" />
     <ClInclude Include="Headers\epColumn.h" />
     <ClInclude Include="Headers\epConnection.h" />
     <ClInclude Include="Headers\epDateTime.h" />

@@ -6,6 +6,7 @@ in many cases such as
 - Visual C++ Projects, that are linked with MFC Libraries.
 - Visual C++ Projects linked with other multiple libraries.
 - etc.
+
 EpOraLibrary solves such issues, and makes it easier for Visual C++ developers 
 to use Oracle Database Operation within their development projects. 
 EpOraLibrary is a custom wrapper library of Oracle OCI Library under a MIT license.

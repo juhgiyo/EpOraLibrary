@@ -1,4 +1,9 @@
+EpOraLibrary
+=======================
+#### Visual C++ Oracle OCI Wrapper Library ####
+
 DESCRIPTION
+-----------
 
 As many people have experienced Oracle OCCI Library's incompatibilities, and problems 
 in many cases such as
@@ -13,7 +18,9 @@ EpOraLibrary is a custom wrapper library of Oracle OCI Library under a MIT licen
 It supports Visual C++ 2005/2008/2010/2012.
 Source can be downloaded at [EpOraLibrary](http://github.com/juhgiyo/eporalibrary)
 
+
 FEATURES
+--------
 
 * Supports the most of operations that Oracle OCCI Library supports.
 * No more linking problems, stated above.
@@ -26,6 +33,7 @@ FEATURES
 
 
 Installation
+------------
 
 * Link EpOraLibrary.lib and EpOraLibrary Header folders in your project.
 * Add oci.dll to the same folder where your project executable exists.
@@ -36,6 +44,7 @@ Installation
 
 
 DOCUMENTATION
+-------------
 
 For detailed documentation, please download the full document [EPLibrary Documentation.chm](https://s3.amazonaws.com/elasticbeanstalk-us-east-1-052504677345/Downloads/EpOraLibrary/EpOraLibrary+Documentation.chm).
 
@@ -51,6 +60,7 @@ If the documentation file is not visible after finishing download,
 
 
 USAGE
+-----
 
 To find the usage examples, please see the [wiki page](https://github.com/juhgiyo/EpOraLibrary/wiki/EpOraLibrary-Usage-Guide)
 
@@ -66,12 +76,14 @@ EpOraLibrary is developed by referencing oraLib 0.0.3, which was developed by 60
 
 
 REFERENCE
+---------
 
 * [OraLib](http://www.codeproject.com/Articles/1925/OraLib-a-lightweight-C-wrapper-over-Oracle-s-OCI-l)
 * [EpLibrary 2.0](https://github.com/juhgiyo/EpLibrary)
 
 
 LICENSE
+-------
 
 [The MIT License](http://opensource.org/licenses/mit-license.php)
 

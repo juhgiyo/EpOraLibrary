@@ -15,7 +15,7 @@ in many cases such as
 
 EpOraLibrary solves such issues, and makes it easier for Visual C++ developers 
 to use Oracle Database Operation within their development projects. 
-EpOraLibrary is a custom wrapper library of Oracle OCI Library under a MIT license.
+EpOraLibrary is a custom wrapper library of Oracle OCI Library under a [MIT License](http://opensource.org/licenses/mit-license.php).
 It supports Visual C++ 2005/2008/2010/2012.
 Source can be downloaded at [EpOraLibrary](http://github.com/juhgiyo/eporalibrary)
 

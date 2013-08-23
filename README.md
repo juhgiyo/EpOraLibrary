@@ -46,9 +46,9 @@ Installation
 Note
 ----
 
-* EpOraLibrary is tested on OracleDB 10g only.
-* In order to use with other versions of OracleDB, you may need to get compatible version of OracleDB SDK and re-compile the EpOraLibrary with new headers and libs.
-* In order to run the client built upon EpOraLibrary (OracleDB 10g), it requires oci.dll, orannzsbb10.dll, oraocci10.dll, and oraociei10.dll. However this may vary among the versions of OracleDB SDK.
+* EpOraLibrary is tested on OracleDB 10g (Windows XP 32bit, and Windows7 32bit) only.
+* In order to use with other versions of OracleDB, you may need to get compatible version of OracleDB Instant Client SDK and re-compile the EpOraLibrary with new headers and libs in it.
+* In order to run the client built upon EpOraLibrary(OracleDB 10g), dlls, required, are oci.dll, orannzsbb10.dll, oraocci10.dll, and oraociei10.dll. However this may vary among the versions of OracleDB SDK.
 
 DOCUMENTATION
 -------------

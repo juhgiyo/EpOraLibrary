@@ -43,6 +43,12 @@ Installation
 (** You may be required to install Oracle Client in case of using "TNS Name," 
       or other advanced functionalities that this library does not support.)
 
+Note
+----
+
+* EpOraLibrary is tested on OracleDB 10g only.
+* In order to use with other versions of OracleDB, you may need to get compatible version of OracleDB SDK and re-compile the EpOraLibrary with new headers and libs.
+* In order to run the client built upon EpOraLibrary (OracleDB 10g), it requires oci.dll, orannzsbb10.dll, oraocci10.dll, and oraociei10.dll. However this may vary among the versions of OracleDB SDK.
 
 DOCUMENTATION
 -------------

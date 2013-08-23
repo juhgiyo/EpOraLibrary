@@ -48,7 +48,7 @@ Note
 
 * `EpOraLibrary` is tested on `OracleDB 10g` (`Windows XP 32bit`, and `Windows7 32bit`) only.
 * In order to use with other versions of OracleDB, you may need to get compatible version of `OracleDB Instant Client SDK` and re-compile the `EpOraLibrary` with new headers and libs in it.
-* The dlls, required, may vary among the versions of OracleDB SDK.
+* The dlls, required, may vary among the versions of `OracleDB Instant Client SDK`.
 
 DOCUMENTATION
 -------------

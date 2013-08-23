@@ -6,7 +6,7 @@ EpOraLibrary
 DESCRIPTION
 -----------
 
-As many people have experienced Oracle OCCI Library's incompatibilities, and problems 
+As many people have experienced `Oracle OCCI Library`'s incompatibilities, and problems 
 in many cases such as
 - Unicode environment.
 - Visual C++ Projects, that are linked with MFC Libraries.
@@ -36,19 +36,19 @@ FEATURES
 Installation
 ------------
 
-* Link EpOraLibrary.lib and EpOraLibrary Header folders in your project.
-* Add oci.dll to the same folder where your project executable exists.
+* Link `EpOraLibrary.lib` and EpOraLibrary Header folders in your project.
+* Add `oci.dll`, `orannzsbb10.dll`, `oraocci10.dll`, and `oraociei10.dll` to the same folder where your project executable exists.
 * Done!
 
-(** You may be required to install Oracle Client in case of using "TNS Name," 
+(** You may be required to install Oracle Client in case of using `TNS Name`, 
       or other advanced functionalities that this library does not support.)
 
 Note
 ----
 
-* EpOraLibrary is tested on OracleDB 10g (Windows XP 32bit, and Windows7 32bit) only.
-* In order to use with other versions of OracleDB, you may need to get compatible version of OracleDB Instant Client SDK and re-compile the EpOraLibrary with new headers and libs in it.
-* In order to run the client built upon EpOraLibrary(OracleDB 10g), dlls, required, are oci.dll, orannzsbb10.dll, oraocci10.dll, and oraociei10.dll. However this may vary among the versions of OracleDB SDK.
+* `EpOraLibrary` is tested on `OracleDB 10g` (`Windows XP 32bit`, and `Windows7 32bit`) only.
+* In order to use with other versions of OracleDB, you may need to get compatible version of `OracleDB Instant Client SDK` and re-compile the `EpOraLibrary` with new headers and libs in it.
+* The dlls, required, may vary among the versions of OracleDB SDK.
 
 DOCUMENTATION
 -------------

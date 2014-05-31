@@ -195,9 +195,9 @@ void OraError::oracleError(int oraErr,OCIError *errorHandle, OCIEnv *envHandle)
 
 			m_description += _T(" ");
 #if defined(_UNICODE) || defined(UNICODE)
-			m_description += epl::System::MultiByteToWideChar(errorText);
+			 m_description +=(wchar_t *)errorText;
 #else // defined(_UNICODE) || defined(UNICODE)
-			m_description += errorText;
+			 m_description += errorText;
 #endif // defined(_UNICODE) || defined(UNICODE)
 			EP_DELETE [] errorText;
 		}

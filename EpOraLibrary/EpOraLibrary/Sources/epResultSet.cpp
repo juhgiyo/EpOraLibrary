@@ -260,7 +260,9 @@ bool ResultSet::Next ()
 
 Column& ResultSet::operator [] (const TCHAR *columnName)
 {
-	ColumnsMap::iterator i = m_columnsMap.find (columnName);
+	epl::EpTString scolumn_name(columnName);
+	scolumn_name=epl::Locale::ToUpper(scolumn_name);
+	ColumnsMap::iterator i = m_columnsMap.find (scolumn_name.c_str());
 	if (i == m_columnsMap.end ())
 		throw (OraError(EC_COLUMN_NOT_FOUND, __TFILE__, __LINE__, columnName));
 	return (*(i->second));

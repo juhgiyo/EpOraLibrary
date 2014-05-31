@@ -95,7 +95,7 @@ void Statement::prepare (const TCHAR *sqlStmt)
 
 	if (result == OCI_SUCCESS)
 	{
-		unsigned int sqlLen = epl::System::TcsLen(sqlStmt);
+		unsigned int sqlLen = epl::EpTString(sqlStmt).length();
 
 		result = OCIStmtPrepare (m_stmtHandle,m_conn->m_errorHandle,(text *) sqlStmt, sqlLen*sizeof(TCHAR), OCI_NTV_SYNTAX, OCI_DEFAULT);
 	}

@@ -1,3 +1,4 @@
+<a href='https://pledgie.com/campaigns/27766'><img alt='Click here to lend your support to: EpOraLibrary and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27766.png?skin_name=chrome' border='0' ></a>
 EpOraLibrary
 =======================
 #### Visual C++ Oracle OCI Wrapper Library ####
@@ -88,6 +89,10 @@ REFERENCE
 * [OraLib](http://www.codeproject.com/Articles/1925/OraLib-a-lightweight-C-wrapper-over-Oracle-s-OCI-l)
 * [EpLibrary 2.0](https://github.com/juhgiyo/EpLibrary)
 
+DONATION
+---------
+
+<a href='https://pledgie.com/campaigns/27766'><img alt='Click here to lend your support to: EpOraLibrary and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27766.png?skin_name=chrome' border='0' ></a>
 
 LICENSE
 -------

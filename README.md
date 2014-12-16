@@ -94,7 +94,8 @@ DONATION
 [![Gratipay][gratipay-image]][gratipay-url]
 
 or donation by Pledgie  
-<a href='https://pledgie.com/campaigns/27766'><img alt='Click here to lend your support to: EpOraLibrary and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27766.png?skin_name=chrome' border='0' ></a>
+<a href='https://pledgie.com/campaigns/27762'><img alt='Click here to lend your support to: Open Source Visual C++/C# Projects and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27762.png?skin_name=chrome' border='0' ></a>
+
 
 LICENSE
 -------

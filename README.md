@@ -53,7 +53,7 @@ Note
 DOCUMENTATION
 -------------
 
-For detailed documentation, please download the full document [EpOraLibrary Documentation.chm](https://s3.amazonaws.com/elasticbeanstalk-us-east-1-052504677345/Downloads/EpOraLibrary/EpOraLibrary+Documentation.chm).
+For detailed documentation, please download the full document [EpOraLibrary Documentation.chm](https://github.com/juhgiyo/EpOraLibrary/releases/download/1.0.0/EpOraLibrary.Documentation.chm).
 
 If the documentation file is not visible after finishing download,
 * Solution 1.
